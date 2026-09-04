@@ -38,3 +38,31 @@ O projeto adota uma estratégia de branches padronizada e integração contínua
 * **docs:** Modificações e adições na documentação.
 
 ## Como Executar o Projeto (Setup)
+
+### 1. Banco de Dados (PostgreSQL)
+Certifique-se de ter o PostgreSQL instalado e rodando.
+1. Crie um banco de dados chamado `srec`.
+2. Configure as credenciais no arquivo `server/.env` (use o `server/.env.example` como base).
+
+### 2. Backend (Node.js)
+Abra um terminal na pasta raiz e navegue para o servidor:
+```bash
+cd server
+npm install
+npm run dev
+```
+O servidor rodará na porta `5000` e as tabelas do banco serão criadas automaticamente.
+
+### 3. Frontend (React)
+Abra outro terminal na pasta raiz e navegue para o cliente:
+```bash
+cd client
+npm install --legacy-peer-deps
+npm run dev
+```
+Acesse a aplicação no seu navegador pelo link fornecido no terminal (geralmente `http://localhost:5173`).
+
+### 4. Testes e Linter
+Para garantir a qualidade, você pode rodar os seguintes comandos nas pastas correspondentes (`server/` ou `client/`):
+* `npm run lint`: Checa os padrões de código (impede PR se houver erro).
+* `npm run test`: Roda os testes automatizados da regra de negócio (apenas na pasta `server`).
