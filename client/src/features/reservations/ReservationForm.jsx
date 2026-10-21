@@ -2,6 +2,13 @@ import { useState } from 'react';
 import { Calendar } from 'lucide-react';
 import { Card } from '../../components/Card';
 
+const ID = {
+  resource: 'reservation-form-resource',
+  userName: 'reservation-form-user-name',
+  startTime: 'reservation-form-start-time',
+  endTime: 'reservation-form-end-time',
+};
+
 export function ReservationForm({ resources, onCreate, onSuccess, onError }) {
   const [resourceId, setResourceId] = useState('');
   const [userName, setUserName] = useState('');
@@ -35,8 +42,9 @@ export function ReservationForm({ resources, onCreate, onSuccess, onError }) {
     <Card title="Novo Agendamento">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Selecione o Espaço</label>
+          <label htmlFor={ID.resource}>Selecione o Espaço</label>
           <select
+            id={ID.resource}
             className="form-control"
             value={selectedResourceId}
             onChange={(e) => setResourceId(e.target.value)}
@@ -50,8 +58,9 @@ export function ReservationForm({ resources, onCreate, onSuccess, onError }) {
           </select>
         </div>
         <div className="form-group">
-          <label>Nome do Responsável</label>
+          <label htmlFor={ID.userName}>Nome do Responsável</label>
           <input
+            id={ID.userName}
             type="text"
             className="form-control"
             placeholder="Ex: Carlos Silva"
@@ -61,8 +70,9 @@ export function ReservationForm({ resources, onCreate, onSuccess, onError }) {
           />
         </div>
         <div className="form-group">
-          <label>Horário de Início</label>
+          <label htmlFor={ID.startTime}>Horário de Início</label>
           <input
+            id={ID.startTime}
             type="datetime-local"
             className="form-control"
             value={startTime}
@@ -71,8 +81,9 @@ export function ReservationForm({ resources, onCreate, onSuccess, onError }) {
           />
         </div>
         <div className="form-group">
-          <label>Horário de Término</label>
+          <label htmlFor={ID.endTime}>Horário de Término</label>
           <input
+            id={ID.endTime}
             type="datetime-local"
             className="form-control"
             value={endTime}
