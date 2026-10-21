@@ -3,7 +3,15 @@ import { PlusCircle } from 'lucide-react';
 import { Card } from '../../components/Card';
 import { RESOURCE_TYPE } from '../../constants/domain';
 
-export function ResourceForm({ onCreate, onSuccess, onError }) {
+// Literal ids (not useId) so tests and DevTools can reference them; FE-05
+// passes its own idPrefix to render an edit form next to this one.
+export function ResourceForm({ idPrefix = 'resource-form', onCreate, onSuccess, onError }) {
+  const ID = {
+    name: `${idPrefix}-name`,
+    type: `${idPrefix}-type`,
+    capacity: `${idPrefix}-capacity`,
+  };
+
   const [name, setName] = useState('');
   const [type, setType] = useState(RESOURCE_TYPE.WORKSTATION);
   const [capacity, setCapacity] = useState(1);
@@ -24,8 +32,9 @@ export function ResourceForm({ onCreate, onSuccess, onError }) {
     <Card title="Novo Espaço">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Nome do Espaço / Estação</label>
+          <label htmlFor={ID.name}>Nome do Espaço / Estação</label>
           <input
+            id={ID.name}
             type="text"
             className="form-control"
             placeholder="Ex: Sala de Reunião Alpha"
@@ -35,15 +44,21 @@ export function ResourceForm({ onCreate, onSuccess, onError }) {
           />
         </div>
         <div className="form-group">
-          <label>Tipo</label>
-          <select className="form-control" value={type} onChange={(e) => setType(e.target.value)}>
+          <label htmlFor={ID.type}>Tipo</label>
+          <select
+            id={ID.type}
+            className="form-control"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          >
             <option value={RESOURCE_TYPE.WORKSTATION}>Estação de Trabalho</option>
             <option value={RESOURCE_TYPE.MEETING_ROOM}>Sala de Reunião</option>
           </select>
         </div>
         <div className="form-group">
-          <label>Capacidade (pessoas)</label>
+          <label htmlFor={ID.capacity}>Capacidade (pessoas)</label>
           <input
+            id={ID.capacity}
             type="number"
             min="1"
             className="form-control"

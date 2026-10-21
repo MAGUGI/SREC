@@ -124,10 +124,20 @@ header {
   font-size: 0.875rem;
 }
 
+/* Keyboard focus ring. The received `ring` declaration is not CSS (it is a
+   Tailwind utility) and `outline: none` left focus invisible. #1d4ed8 gives
+   6.3:1 on white and 5.8:1 on the body, above WCAG 2.2 1.4.11 (3:1). */
+.form-control:focus-visible,
+.btn:focus-visible,
+.tab-btn:focus-visible,
+.btn-outline-danger:focus-visible,
+.alert a:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
 .form-control:focus {
-  outline: none;
   border-color: #3b82f6;
-  ring: 2px solid #93c5fd;
 }
 
 .btn {
@@ -213,6 +223,11 @@ header {
 .item-actions {
   display: flex;
   gap: 0.5rem;
+}
+
+/* The live region container stays in the DOM while empty, taking no space. */
+.alert-placeholder {
+  display: none;
 }
 
 .alert {
