@@ -25,11 +25,11 @@ export function useAppData(showFeedback) {
     }
   }, [loadResources, loadReservations, showFeedback]);
 
-  // TODO(FE-04): this suppression is CS-12 and is removed there.
+  // reloadAll is stable (all its deps are stable callbacks), so this runs once
+  // on mount, as before; the characterization test asserts a single load.
   useEffect(() => {
     reloadAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reloadAll]);
 
   return {
     resources,
