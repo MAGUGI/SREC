@@ -215,6 +215,11 @@ header {
   gap: 0.5rem;
 }
 
+/* The live region container stays in the DOM while empty, taking no space. */
+.alert-placeholder {
+  display: none;
+}
+
 .alert {
   padding: 0.75rem 1rem;
   border-radius: 0.375rem;
