@@ -1,4 +1,5 @@
 import { Trash2, Users } from 'lucide-react';
+import { IconButton } from '../../components/IconButton';
 import { resourceTypeLabel } from '../../constants/domain';
 
 export function ResourceListItem({ resource, onDelete }) {
@@ -11,13 +12,9 @@ export function ResourceListItem({ resource, onDelete }) {
           Capacidade: {resource.capacity}
         </p>
       </div>
-      <button
-        className="btn-outline-danger"
-        onClick={() => onDelete(resource.id)}
-        title="Excluir Espaço"
-      >
+      <IconButton label={`Excluir o espaço ${resource.name}`} onClick={() => onDelete(resource.id)}>
         <Trash2 size={16} />
-      </button>
+      </IconButton>
     </div>
   );
 }

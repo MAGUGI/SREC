@@ -1,4 +1,5 @@
 import { CheckCircle2, Clock, Trash2, XCircle } from 'lucide-react';
+import { IconButton } from '../../components/IconButton';
 import { RESERVATION_STATUS } from '../../constants/domain';
 
 export function ReservationListItem({ reservation, resourceName, onChangeStatus, onDelete }) {
@@ -19,29 +20,27 @@ export function ReservationListItem({ reservation, resourceName, onChangeStatus,
       <div className="item-actions">
         {reservation.status === RESERVATION_STATUS.SCHEDULED && (
           <>
-            <button
+            <IconButton
+              label={`Concluir a reserva de ${reservation.user_name}`}
               className="btn-outline-danger btn-outline-success"
               onClick={() => onChangeStatus(reservation.id, RESERVATION_STATUS.COMPLETED)}
-              title="Concluir"
             >
               <CheckCircle2 size={16} />
-            </button>
-            <button
-              className="btn-outline-danger"
+            </IconButton>
+            <IconButton
+              label={`Cancelar a reserva de ${reservation.user_name}`}
               onClick={() => onChangeStatus(reservation.id, RESERVATION_STATUS.CANCELLED)}
-              title="Cancelar Reserva"
             >
               <XCircle size={16} />
-            </button>
+            </IconButton>
           </>
         )}
-        <button
-          className="btn-outline-danger"
+        <IconButton
+          label={`Excluir definitivamente a reserva de ${reservation.user_name}`}
           onClick={() => onDelete(reservation.id)}
-          title="Excluir Definitivamente"
         >
           <Trash2 size={16} />
-        </button>
+        </IconButton>
       </div>
     </div>
   );
