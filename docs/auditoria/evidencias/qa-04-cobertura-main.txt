@@ -1,0 +1,2979 @@
+QA-04 — C-01 (cobertura do backend), depois, origin/main
+Commit medido: d5d56ef8b353855799dcbee862f980fd260115ce
+Ambiente: node v24.22.0, npm 11.19.1, Windows 11, npm ci limpo
+Banco de integracao: Postgres 16 descartavel de server/docker-compose.test.yml, porta 5433, banco qa04_main (schema pelo globalSetup: migrations); server/.env.test local nao versionado
+
+=== 1. C-01 literal
+$ npx jest --coverage --coverageReporters=text --collectCoverageFrom='src/**/*.js'
+FAIL integration tests/integration/reservations.concurrency.test.js
+  ● Console
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.890Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.895Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.897Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.898Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+  ● reservation concurrency › allows only one overlapping reservation
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 4
+    Received length: 0
+    Received array:  []
+
+    [0m [90m 11 |[39m     })))[33m;[39m
+     [90m 12 |[39m     expect(responses[33m.[39mfilter((response) [33m=>[39m response[33m.[39mstatus [33m===[39m [35m201[39m))[33m.[39mtoHaveLength([35m1[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 13 |[39m     expect(responses[33m.[39mfilter((response) [33m=>[39m response[33m.[39mstatus [33m===[39m [35m409[39m))[33m.[39mtoHaveLength([35m4[39m)[33m;[39m
+     [90m    |[39m                                                                     [31m[1m^[22m[39m
+     [90m 14 |[39m   })[33m;[39m
+     [90m 15 |[39m })[33m;[39m
+     [90m 16 |[39m[0m
+
+      at Object.toHaveLength (tests/integration/reservations.concurrency.test.js:13:69)
+
+FAIL integration tests/integration/resources.test.js
+  ● Console
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.883Z","method":"POST","path":"/api/resources","statusCode":400,"code":"RESOURCE_FIELDS_REQUIRED","sqlstate":"RESOURCE_FIELDS_REQUIRED","reason":"Nome e tipo são obrigatórios."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.900Z","method":"POST","path":"/api/resources","statusCode":400,"code":"RESOURCE_FIELDS_REQUIRED","sqlstate":"RESOURCE_FIELDS_REQUIRED","reason":"Nome e tipo são obrigatórios."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.005Z","method":"GET","path":"/api/resources/1","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"Recurso não encontrado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.016Z","method":"GET","path":"/api/resources/999999","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"Recurso não encontrado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.025Z","method":"GET","path":"/api/resources/abc","statusCode":400,"code":"INVALID_ID_PARAM","sqlstate":"INVALID_ID_PARAM","reason":"O identificador deve ser um inteiro positivo."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at next (node_modules/router/lib/route.js:155:13)
+      at next (src/middlewares/validateIdParam.js:5:12)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at next (node_modules/router/lib/route.js:157:13)
+      at Route.dispatch (node_modules/router/lib/route.js:117:3)
+      at handle (node_modules/router/index.js:435:11)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at node_modules/router/index.js:295:15
+      at param (node_modules/router/index.js:600:14)
+      at param (node_modules/router/index.js:610:14)
+      at processParams (node_modules/router/index.js:664:3)
+      at next (node_modules/router/index.js:291:5)
+      at router.handle (node_modules/router/index.js:186:3)
+      at router (node_modules/router/index.js:60:12)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at trimPrefix (node_modules/router/index.js:342:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/express-rate-limit/dist/index.cjs:720:9
+      at node_modules/express-rate-limit/dist/index.cjs:704:5
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.039Z","method":"PUT","path":"/api/resources/1","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"Recurso não encontrado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.079Z","method":"PUT","path":"/api/resources/1","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"Recurso não encontrado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.089Z","method":"PUT","path":"/api/resources/1","statusCode":400,"code":"EMPTY_UPDATE","sqlstate":"EMPTY_UPDATE","reason":"Informe ao menos um campo para atualizar."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.100Z","method":"PUT","path":"/api/resources/2","statusCode":400,"code":"INVALID_NAME","sqlstate":"INVALID_NAME","reason":"O nome não pode ser vazio."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.111Z","method":"PUT","path":"/api/resources/999999","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"Recurso não encontrado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.120Z","method":"PUT","path":"/api/resources/abc","statusCode":400,"code":"INVALID_ID_PARAM","sqlstate":"INVALID_ID_PARAM","reason":"O identificador deve ser um inteiro positivo."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at next (node_modules/router/lib/route.js:155:13)
+      at next (src/middlewares/validateIdParam.js:5:12)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at next (node_modules/router/lib/route.js:157:13)
+      at Route.dispatch (node_modules/router/lib/route.js:117:3)
+      at handle (node_modules/router/index.js:435:11)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at node_modules/router/index.js:295:15
+      at param (node_modules/router/index.js:600:14)
+      at param (node_modules/router/index.js:610:14)
+      at processParams (node_modules/router/index.js:664:3)
+      at next (node_modules/router/index.js:291:5)
+      at router.handle (node_modules/router/index.js:186:3)
+      at router (node_modules/router/index.js:60:12)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at trimPrefix (node_modules/router/index.js:342:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/express-rate-limit/dist/index.cjs:822:7
+      at node_modules/express-rate-limit/dist/index.cjs:704:5
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.143Z","method":"GET","path":"/api/resources/2","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"Recurso não encontrado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.151Z","method":"DELETE","path":"/api/resources/999999","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"Recurso não encontrado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at Immediate.next (node_modules/router/index.js:291:5)
+      at Immediate._onImmediate (node_modules/router/index.js:688:15)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.160Z","method":"DELETE","path":"/api/resources/abc","statusCode":400,"code":"INVALID_ID_PARAM","sqlstate":"INVALID_ID_PARAM","reason":"O identificador deve ser um inteiro positivo."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at Immediate.next (node_modules/router/index.js:291:5)
+      at Immediate._onImmediate (node_modules/router/index.js:688:15)
+
+  ● API de recursos › POST /api/resources › R-04 sem type → 400 sem gravar
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "0"
+    Received: "1"
+
+    [0m [90m 30 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m
+     [90m 31 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESOURCE_FIELDS_REQUIRED'[39m })[33m;[39m
+    [31m[1m>[22m[39m[90m 32 |[39m       expect(([36mawait[39m pool[33m.[39mquery([32m'SELECT COUNT(*) AS n FROM resources'[39m))[33m.[39mrows[[35m0[39m][33m.[39mn)[33m.[39mtoBe([32m'0'[39m)[33m;[39m
+     [90m    |[39m                                                                                   [31m[1m^[22m[39m
+     [90m 33 |[39m     })[33m;[39m
+     [90m 34 |[39m
+     [90m 35 |[39m     [90m// BUG-10 e BUG-09 continuam abertos (#47). test.failing passa enquanto o[39m[0m
+
+      at toBe (tests/integration/resources.test.js:32:83)
+
+  ● API de recursos › GET /api/resources/:id › R-10 id existente → 200
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 404
+
+    [0m [90m 79 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m api()[33m.[39m[36mget[39m([32m`/api/resources/${created.id}`[39m)[33m;[39m
+     [90m 80 |[39m
+    [31m[1m>[22m[39m[90m 81 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 82 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ id[33m:[39m created[33m.[39mid[33m,[39m name[33m:[39m [32m'Sala Azul'[39m })[33m;[39m
+     [90m 83 |[39m     })[33m;[39m
+     [90m 84 |[39m[0m
+
+      at Object.toBe (tests/integration/resources.test.js:81:31)
+
+  ● API de recursos › PUT /api/resources/:id › R-13 corpo completo → 200 com os três campos trocados
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 404
+
+    [0m [90m 105 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m api()[33m.[39mput([32m`/api/resources/${created.id}`[39m)[33m.[39msend({ name[33m:[39m [32m'Sala Verde'[39m[33m,[39m type[33m:[39m [32m'workstation'[39m[33m,[39m capacity[33m:[39m [35m2[39m })[33m;[39m
+     [90m 106 |[39m
+    [31m[1m>[22m[39m[90m 107 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 108 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ name[33m:[39m [32m'Sala Verde'[39m[33m,[39m type[33m:[39m [32m'workstation'[39m[33m,[39m capacity[33m:[39m [35m2[39m })[33m;[39m
+     [90m 109 |[39m     })[33m;[39m
+     [90m 110 |[39m[0m
+
+      at Object.toBe (tests/integration/resources.test.js:107:31)
+
+  ● API de recursos › PUT /api/resources/:id › R-14 corpo parcial (só type) → 200 preservando o resto (BUG-05)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 404
+
+    [0m [90m 119 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m api()[33m.[39mput([32m`/api/resources/${created.id}`[39m)[33m.[39msend(body)[33m;[39m
+     [90m 120 |[39m
+    [31m[1m>[22m[39m[90m 121 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 122 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject(expected)[33m;[39m
+     [90m 123 |[39m     })[33m;[39m
+     [90m 124 |[39m[0m
+
+      at toBe (tests/integration/resources.test.js:121:31)
+
+  ● API de recursos › DELETE /api/resources/:id › R-22 apagar o espaço apaga as reservas dele em cascata (BUG-06, documenta o comportamento)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 2
+
+    [0m [90m 189 |[39m
+     [90m 190 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 191 |[39m       expect([36mawait[39m countReservations())[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                         [31m[1m^[22m[39m
+     [90m 192 |[39m     })[33m;[39m
+     [90m 193 |[39m   })[33m;[39m
+     [90m 194 |[39m })[33m;[39m[0m
+
+      at Object.toBe (tests/integration/resources.test.js:191:41)
+
+FAIL integration tests/integration/reservations.test.js (5.535 s)
+  ● Console
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.831Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.864Z","method":"POST","path":"/api/reservations","statusCode":400,"code":"MISSING_FIELDS","sqlstate":"MISSING_FIELDS","reason":"Todos os campos são obrigatórios."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.889Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.907Z","method":"POST","path":"/api/reservations","statusCode":400,"code":"END_BEFORE_START","sqlstate":"END_BEFORE_START","reason":"O término da reserva deve ser posterior ao início."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.930Z","method":"POST","path":"/api/reservations","statusCode":400,"code":"START_IN_THE_PAST","sqlstate":"START_IN_THE_PAST","reason":"Não é possível reservar um horário que já passou."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.954Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:04.968Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.013Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.031Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.071Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.086Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.107Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RELATED_RESOURCE_NOT_FOUND","sqlstate":"23503","constraint":"reservations_resource_id_fkey","reason":"insert or update on table \"reservations\" violates foreign key constraint \"reservations_resource_id_fkey\""}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.158Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.299Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.300Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.302Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.304Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.306Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.307Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.309Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.313Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.314Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.316Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.321Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.353Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.354Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.355Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.357Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.359Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.360Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.362Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.363Z","method":"POST","path":"/api/reservations","statusCode":409,"code":"RESERVATION_OVERLAP","sqlstate":"RESERVATION_OVERLAP","reason":"Já existe uma reserva para este espaço no período selecionado."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.394Z","method":"POST","path":"/api/reservations","statusCode":404,"code":"RESOURCE_NOT_FOUND","sqlstate":"RESOURCE_NOT_FOUND","reason":"O espaço informado não existe."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.405Z","method":"POST","path":"/api/reservations","statusCode":400,"code":"INVALID_IDENTIFIER","sqlstate":"22P02","reason":"invalid input syntax for type integer: \"abc\""}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.456Z","method":"GET","path":"/api/reservations/999999","statusCode":404,"code":"RESERVATION_NOT_FOUND","sqlstate":"RESERVATION_NOT_FOUND","reason":"Reserva não encontrada."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.464Z","method":"GET","path":"/api/reservations/abc","statusCode":400,"code":"INVALID_ID_PARAM","sqlstate":"INVALID_ID_PARAM","reason":"O identificador deve ser um inteiro positivo."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at next (node_modules/router/lib/route.js:155:13)
+      at next (src/middlewares/validateIdParam.js:5:12)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at next (node_modules/router/lib/route.js:157:13)
+      at Route.dispatch (node_modules/router/lib/route.js:117:3)
+      at handle (node_modules/router/index.js:435:11)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at node_modules/router/index.js:295:15
+      at param (node_modules/router/index.js:600:14)
+      at param (node_modules/router/index.js:610:14)
+      at processParams (node_modules/router/index.js:664:3)
+      at next (node_modules/router/index.js:291:5)
+      at router.handle (node_modules/router/index.js:186:3)
+      at router (node_modules/router/index.js:60:12)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at trimPrefix (node_modules/router/index.js:342:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/express-rate-limit/dist/index.cjs:720:9
+      at node_modules/express-rate-limit/dist/index.cjs:704:5
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.507Z","method":"PATCH","path":"/api/reservations/1/status","statusCode":400,"code":"INVALID_RESERVATION_STATUS","sqlstate":"INVALID_RESERVATION_STATUS","reason":"Status inválido. Valores aceitos: scheduled, cancelled, completed."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.520Z","method":"PATCH","path":"/api/reservations/1/status","statusCode":400,"code":"INVALID_RESERVATION_STATUS","sqlstate":"INVALID_RESERVATION_STATUS","reason":"Status inválido. Valores aceitos: scheduled, cancelled, completed."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.531Z","method":"PATCH","path":"/api/reservations/1/status","statusCode":400,"code":"INVALID_RESERVATION_STATUS","sqlstate":"INVALID_RESERVATION_STATUS","reason":"Status inválido. Valores aceitos: scheduled, cancelled, completed."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.547Z","method":"PATCH","path":"/api/reservations/1/status","statusCode":409,"code":"INVALID_STATUS_TRANSITION","sqlstate":"INVALID_STATUS_TRANSITION","reason":"Não é possível mudar o status de \"cancelled\" para \"completed\"."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.564Z","method":"PATCH","path":"/api/reservations/1/status","statusCode":409,"code":"INVALID_STATUS_TRANSITION","sqlstate":"INVALID_STATUS_TRANSITION","reason":"Não é possível mudar o status de \"cancelled\" para \"scheduled\"."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.581Z","method":"PATCH","path":"/api/reservations/1/status","statusCode":409,"code":"INVALID_STATUS_TRANSITION","sqlstate":"INVALID_STATUS_TRANSITION","reason":"Não é possível mudar o status de \"completed\" para \"cancelled\"."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.597Z","method":"PATCH","path":"/api/reservations/1/status","statusCode":409,"code":"INVALID_STATUS_TRANSITION","sqlstate":"INVALID_STATUS_TRANSITION","reason":"Não é possível mudar o status de \"completed\" para \"scheduled\"."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.612Z","method":"PATCH","path":"/api/reservations/1/status","statusCode":409,"code":"INVALID_STATUS_TRANSITION","sqlstate":"INVALID_STATUS_TRANSITION","reason":"Não é possível mudar o status de \"scheduled\" para \"scheduled\"."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.626Z","method":"PATCH","path":"/api/reservations/999999/status","statusCode":404,"code":"RESERVATION_NOT_FOUND","sqlstate":"RESERVATION_NOT_FOUND","reason":"Reserva não encontrada."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.637Z","method":"PATCH","path":"/api/reservations/abc/status","statusCode":400,"code":"INVALID_ID_PARAM","sqlstate":"INVALID_ID_PARAM","reason":"O identificador deve ser um inteiro positivo."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at next (node_modules/router/lib/route.js:155:13)
+      at next (src/middlewares/validateIdParam.js:5:12)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at next (node_modules/router/lib/route.js:157:13)
+      at Route.dispatch (node_modules/router/lib/route.js:117:3)
+      at handle (node_modules/router/index.js:435:11)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at node_modules/router/index.js:295:15
+      at param (node_modules/router/index.js:600:14)
+      at param (node_modules/router/index.js:610:14)
+      at processParams (node_modules/router/index.js:664:3)
+      at next (node_modules/router/index.js:291:5)
+      at router.handle (node_modules/router/index.js:186:3)
+      at router (node_modules/router/index.js:60:12)
+      at Layer.handleRequest (node_modules/router/lib/layer.js:152:17)
+      at trimPrefix (node_modules/router/index.js:342:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/express-rate-limit/dist/index.cjs:822:7
+      at node_modules/express-rate-limit/dist/index.cjs:704:5
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.655Z","method":"GET","path":"/api/reservations/1","statusCode":404,"code":"RESERVATION_NOT_FOUND","sqlstate":"RESERVATION_NOT_FOUND","reason":"Reserva não encontrada."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at node_modules/router/index.js:688:15
+      at next (node_modules/router/index.js:276:14)
+      at next (node_modules/router/lib/route.js:132:14)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.665Z","method":"DELETE","path":"/api/reservations/999999","statusCode":404,"code":"RESERVATION_NOT_FOUND","sqlstate":"RESERVATION_NOT_FOUND","reason":"Reserva não encontrada."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at Immediate.next (node_modules/router/index.js:291:5)
+      at Immediate._onImmediate (node_modules/router/index.js:688:15)
+
+    console.error
+      {"level":"error","timestamp":"2026-10-23T18:35:05.674Z","method":"DELETE","path":"/api/reservations/abc","statusCode":400,"code":"INVALID_ID_PARAM","sqlstate":"INVALID_ID_PARAM","reason":"O identificador deve ser um inteiro positivo."}
+
+    [0m [90m 1 |[39m [36mconst[39m write [33m=[39m (level[33m,[39m payload) [33m=>[39m {
+     [90m 2 |[39m   [36mconst[39m line [33m=[39m [33mJSON[39m[33m.[39mstringify({ level[33m,[39m timestamp[33m:[39m [36mnew[39m [33mDate[39m()[33m.[39mtoISOString()[33m,[39m [33m...[39mpayload })[33m;[39m
+    [31m[1m>[22m[39m[90m 3 |[39m   [36mif[39m (level [33m===[39m [32m'error'[39m) console[33m.[39merror(line)[33m;[39m
+     [90m   |[39m                                  [31m[1m^[22m[39m
+     [90m 4 |[39m   [36melse[39m console[33m.[39mlog(line)[33m;[39m
+     [90m 5 |[39m }[33m;[39m
+     [90m 6 |[39m module[33m.[39mexports [33m=[39m {[0m
+
+      at error (src/utils/logger.js:3:34)
+      at Object.write (src/utils/logger.js:7:23)
+      at error (src/middlewares/errorHandler.js:20:10)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at next (node_modules/router/index.js:291:5)
+      at Layer.handleError (node_modules/router/lib/layer.js:111:12)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at Immediate.next (node_modules/router/index.js:291:5)
+      at Immediate._onImmediate (node_modules/router/index.js:688:15)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+    console.log
+      Connected to PostgreSQL Database
+
+      at BoundPool.log (src/config/database.js:10:11)
+
+  ● API de reservas › POST /api/reservations — janela › V-01 janela futura válida → 201 com status scheduled
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 409
+
+    [0m [90m 26 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot([32m'14:00'[39m[33m,[39m [32m'15:00'[39m))[33m;[39m
+     [90m 27 |[39m
+    [31m[1m>[22m[39m[90m 28 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m201[39m)[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 29 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ resource_id[33m:[39m room[33m.[39mid[33m,[39m user_name[33m:[39m [32m'Ana'[39m[33m,[39m status[33m:[39m [32m'scheduled'[39m })[33m;[39m
+     [90m 30 |[39m     })[33m;[39m
+     [90m 31 |[39m[0m
+
+      at Object.toBe (tests/integration/reservations.test.js:28:31)
+
+  ● API de reservas › POST /api/reservations — janela › V-03 end_time antes de start_time → 400 sem gravar (BUG-02)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 404
+
+    [0m [90m 42 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot([32m'16:00'[39m[33m,[39m [32m'15:00'[39m))[33m;[39m
+     [90m 43 |[39m
+    [31m[1m>[22m[39m[90m 44 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 45 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'END_BEFORE_START'[39m })[33m;[39m
+     [90m 46 |[39m       expect([36mawait[39m countReservations())[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m 47 |[39m     })[33m;[39m[0m
+
+      at Object.toBe (tests/integration/reservations.test.js:44:31)
+
+  ● API de reservas › POST /api/reservations — janela › V-29 datetime sem offset → 400 INVALID_DATETIME (BUG-07)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 404
+
+    [0m [90m 67 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m { start_time[33m:[39m [32m'2030-01-10T14:00'[39m[33m,[39m end_time[33m:[39m [32m'2030-01-10T15:00'[39m })[33m;[39m
+     [90m 68 |[39m
+    [31m[1m>[22m[39m[90m 69 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 70 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'INVALID_DATETIME'[39m })[33m;[39m
+     [90m 71 |[39m     })[33m;[39m
+     [90m 72 |[39m[0m
+
+      at Object.toBe (tests/integration/reservations.test.js:69:31)
+
+  ● API de reservas › POST /api/reservations — janela › V-30 devolve o mesmo instante que recebeu, em UTC (BUG-07)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 404
+
+    [0m [90m 74 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot([32m'14:00'[39m[33m,[39m [32m'15:00'[39m))[33m;[39m
+     [90m 75 |[39m
+    [31m[1m>[22m[39m[90m 76 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m201[39m)[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 77 |[39m       expect(response[33m.[39mbody[33m.[39mstart_time)[33m.[39mtoBe([32m'2030-01-10T17:00:00.000Z'[39m)[33m;[39m
+     [90m 78 |[39m       expect(response[33m.[39mbody[33m.[39mend_time)[33m.[39mtoBe([32m'2030-01-10T18:00:00.000Z'[39m)[33m;[39m
+     [90m 79 |[39m     })[33m;[39m[0m
+
+      at Object.toBe (tests/integration/reservations.test.js:76:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-06 parcial à esquerda (09:30 → 10:30) → 409
+
+    error: insert or update on table "reservations" violates foreign key constraint "reservations_resource_id_fkey"
+
+    [0m [90m 23 |[39m
+     [90m 24 |[39m [36mconst[39m insertReservation [33m=[39m [36masync[39m ({ resourceId[33m,[39m userName [33m=[39m [32m'Ana'[39m[33m,[39m start[33m,[39m end[33m,[39m status [33m=[39m [32m'scheduled'[39m }) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 25 |[39m   [36mconst[39m { rows } [33m=[39m [36mawait[39m pool[33m.[39mquery(
+     [90m    |[39m                    [31m[1m^[22m[39m
+     [90m 26 |[39m     [32m'INSERT INTO reservations (resource_id, user_name, start_time, end_time, status) VALUES ($1, $2, $3, $4, $5) RETURNING *'[39m[33m,[39m
+     [90m 27 |[39m     [resourceId[33m,[39m userName[33m,[39m start[33m,[39m end[33m,[39m status][33m,[39m
+     [90m 28 |[39m   )[33m;[39m[0m
+
+      at node_modules/pg-pool/index.js:45:11
+      at insertReservation (tests/helpers/api.js:25:20)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-06b parcial à direita (10:30 → 11:30) → 409
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 404
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-07 intervalo idêntico (10:00 → 11:00) → 409
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 404
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-08 intervalo contido (10:15 → 10:45) → 409
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 201
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-08b intervalo contendo (09:00 → 12:00) → 409
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 404
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-09 começa quando a anterior termina (11:00 → 12:00) → 201
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 404
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-10 termina quando a seguinte começa (09:00 → 10:00) → 201
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 409
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-10c depois, disjunto (12:00 → 13:00) → 201
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 404
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+-------------------------------|---------|----------|---------|---------|-------------------
+File                           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------------------|---------|----------|---------|---------|-------------------
+All files                      |   49.81 |    87.08 |   36.36 |   49.08 |                   
+ src                           |   37.14 |        0 |   21.42 |   39.34 |                   
+  app.js                       |     100 |      100 |     100 |     100 |                   
+  app.test.js                  |       0 |      100 |       0 |       0 | 1-15              
+  index.js                     |       0 |        0 |       0 |       0 | 1-37              
+ src/config                    |   59.45 |    90.74 |   31.57 |    62.5 |                   
+  cors.js                      |     100 |      100 |     100 |     100 |                   
+  database.js                  |   88.88 |      100 |   66.66 |   88.88 | 13                
+  env.js                       |   90.66 |     91.3 |      80 |   91.17 | 53,117-124        
+  env.test.js                  |       0 |      100 |       0 |       0 | 1-72              
+  time.js                      |     100 |       50 |     100 |     100 | 1                 
+ src/controllers               |      70 |      100 |   83.33 |      70 |                   
+  reservationController.js     |     100 |      100 |     100 |     100 |                   
+  resourceController.js        |     100 |      100 |     100 |     100 |                   
+  resourceController.test.js   |       0 |      100 |       0 |       0 | 1-9               
+ src/domain                    |   22.83 |      100 |   17.07 |   20.86 |                   
+  reservationStatus.js         |     100 |      100 |     100 |     100 |                   
+  reservationStatus.test.js    |       0 |      100 |       0 |       0 | 9-124             
+  timeWindow.js                |     100 |      100 |     100 |     100 |                   
+  timeWindow.test.js           |       0 |      100 |       0 |       0 | 1-104             
+ src/errors                    |     100 |        0 |     100 |     100 |                   
+  AppError.js                  |     100 |        0 |     100 |     100 | 2-13              
+  pgErrorCodes.js              |     100 |      100 |     100 |     100 |                   
+ src/middlewares               |   58.57 |    92.68 |   53.33 |   55.73 |                   
+  asyncHandler.js              |     100 |      100 |     100 |     100 |                   
+  errorHandler.js              |   95.45 |    93.33 |     100 |     100 | 11-13             
+  errorHandler.test.js         |       0 |      100 |       0 |       0 | 1-16              
+  rateLimit.js                 |     100 |       75 |     100 |     100 | 3                 
+  validateIdParam.js           |     100 |      100 |     100 |     100 |                   
+  validateIdParam.test.js      |       0 |      100 |       0 |       0 | 1-13              
+ src/models                    |   48.78 |      100 |   52.38 |   48.78 |                   
+  reservationModel.js          |      88 |      100 |   85.71 |      88 | 28-30             
+  reservationModel.test.js     |       0 |      100 |       0 |       0 | 1-62              
+  resourceModel.js             |     100 |      100 |     100 |     100 |                   
+  resourceModel.test.js        |       0 |      100 |       0 |       0 | 1-9               
+ src/routes                    |   68.75 |       50 |      25 |   68.75 |                   
+  healthRoutes.js              |     100 |       50 |     100 |     100 | 12                
+  healthRoutes.test.js         |       0 |      100 |       0 |       0 | 1-16              
+  reservationRoutes.js         |     100 |      100 |     100 |     100 |                   
+  resourceRoutes.js            |     100 |      100 |     100 |     100 |                   
+ src/services                  |   62.96 |    97.61 |      50 |    57.3 |                   
+  reservationService.js        |     100 |      100 |     100 |     100 |                   
+  reservationService.test.js   |       0 |      100 |       0 |       0 | 1-28              
+  resourceService.js           |   95.83 |    94.73 |     100 |   94.44 | 13                
+  resourceService.test.js      |       0 |      100 |       0 |       0 | 1-15              
+ src/utils                     |   42.85 |     87.5 |   23.07 |   43.75 |                   
+  datetime.js                  |     100 |      100 |     100 |     100 |                   
+  datetime.test.js             |       0 |      100 |       0 |       0 | 1-51              
+  logger.js                    |   66.66 |       50 |      50 |    62.5 | 4,8-9             
+ src/validators                |    32.2 |    88.23 |   14.28 |   27.45 |                   
+  reservationValidator.js      |     100 |      100 |     100 |     100 |                   
+  reservationValidator.test.js |       0 |        0 |       0 |       0 | 1-99              
+-------------------------------|---------|----------|---------|---------|-------------------
+Jest: Coverage for statements (47.68%) does not meet "global" threshold (80%)
+Jest: Coverage for lines (46.6%) does not meet "global" threshold (80%)
+Jest: Coverage for functions (33.51%) does not meet "global" threshold (85%)
+Jest: Coverage for statements (70%) does not meet "./src/controllers/" threshold (90%)
+Jest: Coverage for statements (68.75%) does not meet "./src/routes/" threshold (100%)
+Summary of all failing tests
+FAIL tests/integration/reservations.concurrency.test.js
+  ● reservation concurrency › allows only one overlapping reservation
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 4
+    Received length: 0
+    Received array:  []
+
+    [0m [90m 11 |[39m     })))[33m;[39m
+     [90m 12 |[39m     expect(responses[33m.[39mfilter((response) [33m=>[39m response[33m.[39mstatus [33m===[39m [35m201[39m))[33m.[39mtoHaveLength([35m1[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 13 |[39m     expect(responses[33m.[39mfilter((response) [33m=>[39m response[33m.[39mstatus [33m===[39m [35m409[39m))[33m.[39mtoHaveLength([35m4[39m)[33m;[39m
+     [90m    |[39m                                                                     [31m[1m^[22m[39m
+     [90m 14 |[39m   })[33m;[39m
+     [90m 15 |[39m })[33m;[39m
+     [90m 16 |[39m[0m
+
+      at Object.toHaveLength (tests/integration/reservations.concurrency.test.js:13:69)
+
+FAIL tests/integration/resources.test.js
+  ● API de recursos › POST /api/resources › R-04 sem type → 400 sem gravar
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "0"
+    Received: "1"
+
+    [0m [90m 30 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m
+     [90m 31 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESOURCE_FIELDS_REQUIRED'[39m })[33m;[39m
+    [31m[1m>[22m[39m[90m 32 |[39m       expect(([36mawait[39m pool[33m.[39mquery([32m'SELECT COUNT(*) AS n FROM resources'[39m))[33m.[39mrows[[35m0[39m][33m.[39mn)[33m.[39mtoBe([32m'0'[39m)[33m;[39m
+     [90m    |[39m                                                                                   [31m[1m^[22m[39m
+     [90m 33 |[39m     })[33m;[39m
+     [90m 34 |[39m
+     [90m 35 |[39m     [90m// BUG-10 e BUG-09 continuam abertos (#47). test.failing passa enquanto o[39m[0m
+
+      at toBe (tests/integration/resources.test.js:32:83)
+
+  ● API de recursos › GET /api/resources/:id › R-10 id existente → 200
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 404
+
+    [0m [90m 79 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m api()[33m.[39m[36mget[39m([32m`/api/resources/${created.id}`[39m)[33m;[39m
+     [90m 80 |[39m
+    [31m[1m>[22m[39m[90m 81 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 82 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ id[33m:[39m created[33m.[39mid[33m,[39m name[33m:[39m [32m'Sala Azul'[39m })[33m;[39m
+     [90m 83 |[39m     })[33m;[39m
+     [90m 84 |[39m[0m
+
+      at Object.toBe (tests/integration/resources.test.js:81:31)
+
+  ● API de recursos › PUT /api/resources/:id › R-13 corpo completo → 200 com os três campos trocados
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 404
+
+    [0m [90m 105 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m api()[33m.[39mput([32m`/api/resources/${created.id}`[39m)[33m.[39msend({ name[33m:[39m [32m'Sala Verde'[39m[33m,[39m type[33m:[39m [32m'workstation'[39m[33m,[39m capacity[33m:[39m [35m2[39m })[33m;[39m
+     [90m 106 |[39m
+    [31m[1m>[22m[39m[90m 107 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 108 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ name[33m:[39m [32m'Sala Verde'[39m[33m,[39m type[33m:[39m [32m'workstation'[39m[33m,[39m capacity[33m:[39m [35m2[39m })[33m;[39m
+     [90m 109 |[39m     })[33m;[39m
+     [90m 110 |[39m[0m
+
+      at Object.toBe (tests/integration/resources.test.js:107:31)
+
+  ● API de recursos › PUT /api/resources/:id › R-14 corpo parcial (só type) → 200 preservando o resto (BUG-05)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 404
+
+    [0m [90m 119 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m api()[33m.[39mput([32m`/api/resources/${created.id}`[39m)[33m.[39msend(body)[33m;[39m
+     [90m 120 |[39m
+    [31m[1m>[22m[39m[90m 121 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 122 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject(expected)[33m;[39m
+     [90m 123 |[39m     })[33m;[39m
+     [90m 124 |[39m[0m
+
+      at toBe (tests/integration/resources.test.js:121:31)
+
+  ● API de recursos › DELETE /api/resources/:id › R-22 apagar o espaço apaga as reservas dele em cascata (BUG-06, documenta o comportamento)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 2
+
+    [0m [90m 189 |[39m
+     [90m 190 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 191 |[39m       expect([36mawait[39m countReservations())[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                         [31m[1m^[22m[39m
+     [90m 192 |[39m     })[33m;[39m
+     [90m 193 |[39m   })[33m;[39m
+     [90m 194 |[39m })[33m;[39m[0m
+
+      at Object.toBe (tests/integration/resources.test.js:191:41)
+
+FAIL tests/integration/reservations.test.js (5.535 s)
+  ● API de reservas › POST /api/reservations — janela › V-01 janela futura válida → 201 com status scheduled
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 409
+
+    [0m [90m 26 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot([32m'14:00'[39m[33m,[39m [32m'15:00'[39m))[33m;[39m
+     [90m 27 |[39m
+    [31m[1m>[22m[39m[90m 28 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m201[39m)[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 29 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ resource_id[33m:[39m room[33m.[39mid[33m,[39m user_name[33m:[39m [32m'Ana'[39m[33m,[39m status[33m:[39m [32m'scheduled'[39m })[33m;[39m
+     [90m 30 |[39m     })[33m;[39m
+     [90m 31 |[39m[0m
+
+      at Object.toBe (tests/integration/reservations.test.js:28:31)
+
+  ● API de reservas › POST /api/reservations — janela › V-03 end_time antes de start_time → 400 sem gravar (BUG-02)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 404
+
+    [0m [90m 42 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot([32m'16:00'[39m[33m,[39m [32m'15:00'[39m))[33m;[39m
+     [90m 43 |[39m
+    [31m[1m>[22m[39m[90m 44 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 45 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'END_BEFORE_START'[39m })[33m;[39m
+     [90m 46 |[39m       expect([36mawait[39m countReservations())[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m 47 |[39m     })[33m;[39m[0m
+
+      at Object.toBe (tests/integration/reservations.test.js:44:31)
+
+  ● API de reservas › POST /api/reservations — janela › V-29 datetime sem offset → 400 INVALID_DATETIME (BUG-07)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 404
+
+    [0m [90m 67 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m { start_time[33m:[39m [32m'2030-01-10T14:00'[39m[33m,[39m end_time[33m:[39m [32m'2030-01-10T15:00'[39m })[33m;[39m
+     [90m 68 |[39m
+    [31m[1m>[22m[39m[90m 69 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 70 |[39m       expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'INVALID_DATETIME'[39m })[33m;[39m
+     [90m 71 |[39m     })[33m;[39m
+     [90m 72 |[39m[0m
+
+      at Object.toBe (tests/integration/reservations.test.js:69:31)
+
+  ● API de reservas › POST /api/reservations — janela › V-30 devolve o mesmo instante que recebeu, em UTC (BUG-07)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 404
+
+    [0m [90m 74 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot([32m'14:00'[39m[33m,[39m [32m'15:00'[39m))[33m;[39m
+     [90m 75 |[39m
+    [31m[1m>[22m[39m[90m 76 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m201[39m)[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 77 |[39m       expect(response[33m.[39mbody[33m.[39mstart_time)[33m.[39mtoBe([32m'2030-01-10T17:00:00.000Z'[39m)[33m;[39m
+     [90m 78 |[39m       expect(response[33m.[39mbody[33m.[39mend_time)[33m.[39mtoBe([32m'2030-01-10T18:00:00.000Z'[39m)[33m;[39m
+     [90m 79 |[39m     })[33m;[39m[0m
+
+      at Object.toBe (tests/integration/reservations.test.js:76:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-06 parcial à esquerda (09:30 → 10:30) → 409
+
+    error: insert or update on table "reservations" violates foreign key constraint "reservations_resource_id_fkey"
+
+    [0m [90m 23 |[39m
+     [90m 24 |[39m [36mconst[39m insertReservation [33m=[39m [36masync[39m ({ resourceId[33m,[39m userName [33m=[39m [32m'Ana'[39m[33m,[39m start[33m,[39m end[33m,[39m status [33m=[39m [32m'scheduled'[39m }) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 25 |[39m   [36mconst[39m { rows } [33m=[39m [36mawait[39m pool[33m.[39mquery(
+     [90m    |[39m                    [31m[1m^[22m[39m
+     [90m 26 |[39m     [32m'INSERT INTO reservations (resource_id, user_name, start_time, end_time, status) VALUES ($1, $2, $3, $4, $5) RETURNING *'[39m[33m,[39m
+     [90m 27 |[39m     [resourceId[33m,[39m userName[33m,[39m start[33m,[39m end[33m,[39m status][33m,[39m
+     [90m 28 |[39m   )[33m;[39m[0m
+
+      at node_modules/pg-pool/index.js:45:11
+      at insertReservation (tests/helpers/api.js:25:20)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-06b parcial à direita (10:30 → 11:30) → 409
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 404
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-07 intervalo idêntico (10:00 → 11:00) → 409
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 404
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-08 intervalo contido (10:15 → 10:45) → 409
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 201
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-08b intervalo contendo (09:00 → 12:00) → 409
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 404
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-09 começa quando a anterior termina (11:00 → 12:00) → 201
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 404
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-10 termina quando a seguinte começa (09:00 → 10:00) → 201
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 409
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+  ● API de reservas › POST /api/reservations — sobreposição › V-10c depois, disjunto (12:00 → 13:00) → 201
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 404
+
+    [0m [90m  98 |[39m       [36mconst[39m response [33m=[39m [36mawait[39m reserve(room[33m.[39mid[33m,[39m slot(start[33m,[39m end))[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe(expected)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 101 |[39m       [36mif[39m (expected [33m===[39m [35m409[39m) expect(response[33m.[39mbody)[33m.[39mtoMatchObject({ code[33m:[39m [32m'RESERVATION_OVERLAP'[39m })[33m;[39m
+     [90m 102 |[39m     })[33m;[39m
+     [90m 103 |[39m[0m
+
+      at toBe (tests/integration/reservations.test.js:100:31)
+
+
+Test Suites: 3 failed, 18 passed, 21 total
+Tests:       18 failed, 1 todo, 219 passed, 238 total
+Snapshots:   0 total
+Time:        8.416 s
+Ran all test suites in 2 projects.
+[exit=1]
+
+=== 2. C-01 serial (--runInBand)
+$ npx jest --runInBand --coverage --coverageReporters=text --collectCoverageFrom='src/**/*.js'
+-------------------------------|---------|----------|---------|---------|-------------------
+File                           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------------------|---------|----------|---------|---------|-------------------
+All files                      |   49.81 |    87.08 |   36.36 |   49.08 |                   
+ src                           |   37.14 |        0 |   21.42 |   39.34 |                   
+  app.js                       |     100 |      100 |     100 |     100 |                   
+  app.test.js                  |       0 |      100 |       0 |       0 | 1-15              
+  index.js                     |       0 |        0 |       0 |       0 | 1-37              
+ src/config                    |   59.45 |    90.74 |   31.57 |    62.5 |                   
+  cors.js                      |     100 |      100 |     100 |     100 |                   
+  database.js                  |   88.88 |      100 |   66.66 |   88.88 | 13                
+  env.js                       |   90.66 |     91.3 |      80 |   91.17 | 53,117-124        
+  env.test.js                  |       0 |      100 |       0 |       0 | 1-72              
+  time.js                      |     100 |       50 |     100 |     100 | 1                 
+ src/controllers               |      70 |      100 |   83.33 |      70 |                   
+  reservationController.js     |     100 |      100 |     100 |     100 |                   
+  resourceController.js        |     100 |      100 |     100 |     100 |                   
+  resourceController.test.js   |       0 |      100 |       0 |       0 | 1-9               
+ src/domain                    |   22.83 |      100 |   17.07 |   20.86 |                   
+  reservationStatus.js         |     100 |      100 |     100 |     100 |                   
+  reservationStatus.test.js    |       0 |      100 |       0 |       0 | 9-124             
+  timeWindow.js                |     100 |      100 |     100 |     100 |                   
+  timeWindow.test.js           |       0 |      100 |       0 |       0 | 1-104             
+ src/errors                    |     100 |        0 |     100 |     100 |                   
+  AppError.js                  |     100 |        0 |     100 |     100 | 2-13              
+  pgErrorCodes.js              |     100 |      100 |     100 |     100 |                   
+ src/middlewares               |   58.57 |    92.68 |   53.33 |   55.73 |                   
+  asyncHandler.js              |     100 |      100 |     100 |     100 |                   
+  errorHandler.js              |   95.45 |    93.33 |     100 |     100 | 11-13             
+  errorHandler.test.js         |       0 |      100 |       0 |       0 | 1-16              
+  rateLimit.js                 |     100 |       75 |     100 |     100 | 3                 
+  validateIdParam.js           |     100 |      100 |     100 |     100 |                   
+  validateIdParam.test.js      |       0 |      100 |       0 |       0 | 1-13              
+ src/models                    |   48.78 |      100 |   52.38 |   48.78 |                   
+  reservationModel.js          |      88 |      100 |   85.71 |      88 | 28-30             
+  reservationModel.test.js     |       0 |      100 |       0 |       0 | 1-62              
+  resourceModel.js             |     100 |      100 |     100 |     100 |                   
+  resourceModel.test.js        |       0 |      100 |       0 |       0 | 1-9               
+ src/routes                    |   68.75 |       50 |      25 |   68.75 |                   
+  healthRoutes.js              |     100 |       50 |     100 |     100 | 12                
+  healthRoutes.test.js         |       0 |      100 |       0 |       0 | 1-16              
+  reservationRoutes.js         |     100 |      100 |     100 |     100 |                   
+  resourceRoutes.js            |     100 |      100 |     100 |     100 |                   
+ src/services                  |   62.96 |    97.61 |      50 |    57.3 |                   
+  reservationService.js        |   97.77 |    95.65 |     100 |   97.05 | 23                
+  reservationService.test.js   |       0 |      100 |       0 |       0 | 1-28              
+  resourceService.js           |     100 |      100 |     100 |     100 |                   
+  resourceService.test.js      |       0 |      100 |       0 |       0 | 1-15              
+ src/utils                     |   42.85 |     87.5 |   23.07 |   43.75 |                   
+  datetime.js                  |     100 |      100 |     100 |     100 |                   
+  datetime.test.js             |       0 |      100 |       0 |       0 | 1-51              
+  logger.js                    |   66.66 |       50 |      50 |    62.5 | 4,8-9             
+ src/validators                |    32.2 |    88.23 |   14.28 |   27.45 |                   
+  reservationValidator.js      |     100 |      100 |     100 |     100 |                   
+  reservationValidator.test.js |       0 |        0 |       0 |       0 | 1-99              
+-------------------------------|---------|----------|---------|---------|-------------------
+Jest: Coverage for statements (47.68%) does not meet "global" threshold (80%)
+Jest: Coverage for lines (46.6%) does not meet "global" threshold (80%)
+Jest: Coverage for functions (33.51%) does not meet "global" threshold (85%)
+Jest: Coverage for statements (70%) does not meet "./src/controllers/" threshold (90%)
+Jest: Coverage for statements (68.75%) does not meet "./src/routes/" threshold (100%)
+
+Test Suites: 21 passed, 21 total
+Tests:       1 todo, 237 passed, 238 total
+Snapshots:   0 total
+Time:        3.697 s, estimated 45 s
+Ran all test suites in 2 projects.
+[exit=1]
+
+=== 3. C-01 serial, sem os *.test.js co-localizados em src/ no denominador
+$ npx jest --runInBand --coverage --coverageReporters=text --collectCoverageFrom='src/**/*.js' --collectCoverageFrom='!src/**/*.test.js'
+---------------------------|---------|----------|---------|---------|-------------------
+File                       | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------------------|---------|----------|---------|---------|-------------------
+All files                  |   89.95 |    87.92 |    84.7 |   90.41 |                   
+ src                       |   48.14 |        0 |      30 |   51.06 |                   
+  app.js                   |     100 |      100 |     100 |     100 |                   
+  index.js                 |       0 |        0 |       0 |       0 | 1-37              
+ src/config                |   91.66 |    90.74 |      80 |   91.95 |                   
+  cors.js                  |     100 |      100 |     100 |     100 |                   
+  database.js              |   88.88 |      100 |   66.66 |   88.88 | 13                
+  env.js                   |   90.66 |     91.3 |      80 |   91.17 | 53,117-124        
+  time.js                  |     100 |       50 |     100 |     100 | 1                 
+ src/controllers           |     100 |      100 |     100 |     100 |                   
+  reservationController.js |     100 |      100 |     100 |     100 |                   
+  resourceController.js    |     100 |      100 |     100 |     100 |                   
+ src/domain                |     100 |      100 |     100 |     100 |                   
+  reservationStatus.js     |     100 |      100 |     100 |     100 |                   
+  timeWindow.js            |     100 |      100 |     100 |     100 |                   
+ src/errors                |     100 |        0 |     100 |     100 |                   
+  AppError.js              |     100 |        0 |     100 |     100 | 2-13              
+  pgErrorCodes.js          |     100 |      100 |     100 |     100 |                   
+ src/middlewares           |   97.61 |    92.68 |     100 |     100 |                   
+  asyncHandler.js          |     100 |      100 |     100 |     100 |                   
+  errorHandler.js          |   95.45 |    93.33 |     100 |     100 | 11-13             
+  rateLimit.js             |     100 |       75 |     100 |     100 | 3                 
+  validateIdParam.js       |     100 |      100 |     100 |     100 |                   
+ src/models                |   93.02 |      100 |   91.66 |   93.02 |                   
+  reservationModel.js      |      88 |      100 |   85.71 |      88 | 28-30             
+  resourceModel.js         |     100 |      100 |     100 |     100 |                   
+ src/routes                |     100 |       50 |     100 |     100 |                   
+  healthRoutes.js          |     100 |       50 |     100 |     100 | 12                
+  reservationRoutes.js     |     100 |      100 |     100 |     100 |                   
+  resourceRoutes.js        |     100 |      100 |     100 |     100 |                   
+ src/services              |   98.55 |    97.61 |     100 |   98.07 |                   
+  reservationService.js    |   97.77 |    95.65 |     100 |   97.05 | 23                
+  resourceService.js       |     100 |      100 |     100 |     100 |                   
+ src/utils                 |   83.33 |     87.5 |      60 |   82.35 |                   
+  datetime.js              |     100 |      100 |     100 |     100 |                   
+  logger.js                |   66.66 |       50 |      50 |    62.5 | 4,8-9             
+ src/validators            |     100 |      100 |     100 |     100 |                   
+  reservationValidator.js  |     100 |      100 |     100 |     100 |                   
+---------------------------|---------|----------|---------|---------|-------------------
+Jest: Coverage for functions (82.43%) does not meet "global" threshold (85%)
+
+Test Suites: 21 passed, 21 total
+Tests:       1 todo, 237 passed, 238 total
+Snapshots:   0 total
+Time:        3.522 s, estimated 4 s
+Ran all test suites in 2 projects.
+[exit=1]
+
+=== 4. Armadilha: sem --collectCoverageFrom (vale o do jest.config.js, se houver)
+$ npx jest --runInBand --coverage --coverageReporters=text
+---------------------------|---------|----------|---------|---------|-------------------
+File                       | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------------------|---------|----------|---------|---------|-------------------
+All files                  |   96.09 |    91.45 |    92.3 |   96.14 |                   
+ src                       |     100 |      100 |     100 |     100 |                   
+  app.js                   |     100 |      100 |     100 |     100 |                   
+ src/config                |   91.66 |    90.74 |      80 |   91.95 |                   
+  cors.js                  |     100 |      100 |     100 |     100 |                   
+  database.js              |   88.88 |      100 |   66.66 |   88.88 | 13                
+  env.js                   |   90.66 |     91.3 |      80 |   91.17 | 53,117-124        
+  time.js                  |     100 |       50 |     100 |     100 | 1                 
+ src/controllers           |     100 |      100 |     100 |     100 |                   
+  reservationController.js |     100 |      100 |     100 |     100 |                   
+  resourceController.js    |     100 |      100 |     100 |     100 |                   
+ src/domain                |     100 |      100 |     100 |     100 |                   
+  reservationStatus.js     |     100 |      100 |     100 |     100 |                   
+  timeWindow.js            |     100 |      100 |     100 |     100 |                   
+ src/errors                |     100 |        0 |     100 |     100 |                   
+  AppError.js              |     100 |        0 |     100 |     100 | 2-13              
+  pgErrorCodes.js          |     100 |      100 |     100 |     100 |                   
+ src/middlewares           |   97.61 |    92.68 |     100 |     100 |                   
+  asyncHandler.js          |     100 |      100 |     100 |     100 |                   
+  errorHandler.js          |   95.45 |    93.33 |     100 |     100 | 11-13             
+  rateLimit.js             |     100 |       75 |     100 |     100 | 3                 
+  validateIdParam.js       |     100 |      100 |     100 |     100 |                   
+ src/models                |   93.02 |      100 |   91.66 |   93.02 |                   
+  reservationModel.js      |      88 |      100 |   85.71 |      88 | 28-30             
+  resourceModel.js         |     100 |      100 |     100 |     100 |                   
+ src/routes                |     100 |       50 |     100 |     100 |                   
+  healthRoutes.js          |     100 |       50 |     100 |     100 | 12                
+  reservationRoutes.js     |     100 |      100 |     100 |     100 |                   
+  resourceRoutes.js        |     100 |      100 |     100 |     100 |                   
+ src/services              |   98.55 |    97.61 |     100 |   98.07 |                   
+  reservationService.js    |   97.77 |    95.65 |     100 |   97.05 | 23                
+  resourceService.js       |     100 |      100 |     100 |     100 |                   
+ src/utils                 |   83.33 |     87.5 |      60 |   82.35 |                   
+  datetime.js              |     100 |      100 |     100 |     100 |                   
+  logger.js                |   66.66 |       50 |      50 |    62.5 | 4,8-9             
+ src/validators            |     100 |      100 |     100 |     100 |                   
+  reservationValidator.js  |     100 |      100 |     100 |     100 |                   
+---------------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 21 passed, 21 total
+Tests:       1 todo, 237 passed, 238 total
+Snapshots:   0 total
+Time:        3.101 s, estimated 4 s
+Ran all test suites in 2 projects.
+[exit=0]

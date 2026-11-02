@@ -1,0 +1,47 @@
+QA-01 — cobertura com o gate, suíte inteira (unit + integração)
+Comando: cd server && npm run db:test:up && npm run test:coverage
+Commit medido: 8792a56 + jest.config.js com coverageThreshold
+
+---------------------------|---------|----------|---------|---------|-------------------
+File                       | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------------------|---------|----------|---------|---------|-------------------
+All files                  |   95.09 |    89.47 |   92.53 |   94.75 |                   
+ src                       |     100 |      100 |     100 |     100 |                   
+  app.js                   |     100 |      100 |     100 |     100 |                   
+ src/config                |      75 |     87.5 |   66.66 |   73.07 |                   
+  cors.js                  |     100 |      100 |     100 |     100 |                   
+  database.js              |      90 |      100 |   66.66 |      90 | 14                
+  initDb.js                |       0 |      100 |       0 |       0 | 1-30              
+  time.js                  |     100 |       50 |     100 |     100 | 1                 
+ src/controllers           |     100 |      100 |     100 |     100 |                   
+  reservationController.js |     100 |      100 |     100 |     100 |                   
+  resourceController.js    |     100 |      100 |     100 |     100 |                   
+ src/domain                |     100 |      100 |     100 |     100 |                   
+  reservationStatus.js     |     100 |      100 |     100 |     100 |                   
+ src/errors                |     100 |        0 |     100 |     100 |                   
+  AppError.js              |     100 |        0 |     100 |     100 | 2-13              
+  pgErrorCodes.js          |     100 |      100 |     100 |     100 |                   
+ src/middlewares           |   97.61 |    92.68 |     100 |     100 |                   
+  asyncHandler.js          |     100 |      100 |     100 |     100 |                   
+  errorHandler.js          |   95.45 |    93.33 |     100 |     100 | 11-13             
+  rateLimit.js             |     100 |       75 |     100 |     100 | 3                 
+  validateIdParam.js       |     100 |      100 |     100 |     100 |                   
+ src/models                |   93.02 |      100 |   91.66 |   93.02 |                   
+  reservationModel.js      |      88 |      100 |   85.71 |      88 | 28-30             
+  resourceModel.js         |     100 |      100 |     100 |     100 |                   
+ src/routes                |     100 |       50 |     100 |     100 |                   
+  healthRoutes.js          |     100 |       50 |     100 |     100 | 12                
+  reservationRoutes.js     |     100 |      100 |     100 |     100 |                   
+  resourceRoutes.js        |     100 |      100 |     100 |     100 |                   
+ src/services              |   98.55 |    97.61 |     100 |   98.07 |                   
+  reservationService.js    |   97.77 |    95.65 |     100 |   97.05 | 23                
+  resourceService.js       |     100 |      100 |     100 |     100 |                   
+ src/utils                 |   77.77 |       75 |      60 |   76.47 |                   
+  datetime.js              |   88.88 |    83.33 |     100 |   88.88 | 10                
+  logger.js                |   66.66 |       50 |      50 |    62.5 | 4,8-9             
+ src/validators            |     100 |      100 |     100 |     100 |                   
+  reservationValidator.js  |     100 |      100 |     100 |     100 |                   
+---------------------------|---------|----------|---------|---------|-------------------
+Test Suites: 19 passed, 19 total
+Tests:       1 todo, 116 passed, 117 total
+exit=0

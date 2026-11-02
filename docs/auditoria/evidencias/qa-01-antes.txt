@@ -1,0 +1,106 @@
+QA-01 — a mesma suíte de integração contra o código recebido e contra o #41
+
+Antes:  servidor de origin/main 1c7a0be (código recebido, sem BE-01..BE-08), `node src/index.js` na porta 5099, banco srec_baseline vazio
+Depois: app em memória da branch test/api-integration-suite 8792a56 (= #41 + esta suíte), banco srec_test com initDb + migrations
+Suíte:  tests/integration/resources.test.js, reservations.test.js, app.test.js
+
+Reproduzir (de server/, com `npm run db:test:up`):
+  antes:  (cd <checkout de 1c7a0be>/server && DATABASE_URL=postgres://srec:srec@localhost:5433/srec_baseline PORT=5099 node src/index.js) &
+          API_BASE_URL=http://localhost:5099 DATABASE_URL=postgres://srec:srec@localhost:5433/srec_baseline             npx jest --selectProjects integration --runInBand tests/integration/resources.test.js tests/integration/reservations.test.js tests/integration/app.test.js
+  depois: npx jest --selectProjects integration --runInBand tests/integration/resources.test.js tests/integration/reservations.test.js tests/integration/app.test.js
+
+Resultado
+  antes:  51 reprovam, 28 passam, 1 pulado (A-08 só roda em memória), 1 todo (R-21)
+          38 dos 51 reprovam pelo STATUS HTTP; os demais por contrato (envelope {error, code}, JSON, cabeçalhos, constraint ausente)
+  depois: 0 reprovam, 80 passam, 1 todo (R-21)
+
+Notas de leitura
+  * test.failing (R-05, R-06, R-07, A-03, A-03b) "passa" enquanto o bug existe. R-05..R-07 = BUG-10/BUG-09, abertos (#47).
+    A-03 passa "antes" porque o código recebido respondia 400 em HTML; A-03b REPROVA "antes" porque o código recebido
+    respondia 413 corretamente. Ou seja: JSON malformado e corpo grande viraram 500 no #41 — regressão registrada em #49.
+  * V-30 passa "antes" porque esta máquina roda em America/Sao_Paulo; BUG-07 só aparece com o servidor em TZ=UTC.
+  * V-12: o código recebido respondeu 201 para 15 das 20 requisições concorrentes no mesmo slot nesta execução (BUG-01; o número varia por execução, nunca é 1). Na primeira execução foram 12.
+
+| Caso | Antes (código recebido) | Motivo da falha antes | Depois (#41) |
+|---|---|---|---|
+| V-01 janela futura válida → 201 com status scheduled | passa |  | passa |
+| V-02 sem user_name → 400 sem gravar | **FALHA** | status certo, sem `code` no corpo (envelope de BE-04) | passa |
+| V-03 end_time antes de start_time → 400 sem gravar (BUG-02) | **FALHA** | status 201 (esperado 400) | passa |
+| V-04 end_time igual a start_time → 400 sem gravar (BUG-02) | **FALHA** | status 201 (esperado 400) | passa |
+| V-05 janela no passado → 400 sem gravar (BUG-08) | **FALHA** | status 201 (esperado 400) | passa |
+| V-29 datetime sem offset → 400 INVALID_DATETIME (BUG-07) | **FALHA** | status 201 (esperado 400) | passa |
+| V-30 devolve o mesmo instante que recebeu, em UTC (BUG-07) | passa |  | passa |
+| V-06 parcial à esquerda (09:30 → 10:30) → 409 | **FALHA** | status certo, sem `code` no corpo (envelope de BE-04) | passa |
+| V-06b parcial à direita (10:30 → 11:30) → 409 | **FALHA** | status certo, sem `code` no corpo (envelope de BE-04) | passa |
+| V-07 intervalo idêntico (10:00 → 11:00) → 409 | **FALHA** | status certo, sem `code` no corpo (envelope de BE-04) | passa |
+| V-08 intervalo contido (10:15 → 10:45) → 409 | **FALHA** | status certo, sem `code` no corpo (envelope de BE-04) | passa |
+| V-08b intervalo contendo (09:00 → 12:00) → 409 | **FALHA** | status certo, sem `code` no corpo (envelope de BE-04) | passa |
+| V-09 começa quando a anterior termina (11:00 → 12:00) → 201 | passa |  | passa |
+| V-10 termina quando a seguinte começa (09:00 → 10:00) → 201 | passa |  | passa |
+| V-10b antes, disjunto (08:00 → 09:00) → 201 | passa |  | passa |
+| V-10c depois, disjunto (12:00 → 13:00) → 201 | passa |  | passa |
+| V-11 horário liberado por reserva cancelada → 201 | passa |  | passa |
+| V-11b o mesmo horário em outro espaço não conflita → 201 | passa |  | passa |
+| V-12 20 requisições concorrentes no mesmo slot → exatamente 1×201 e 19×409, zero 5xx (BUG-01) | **FALHA** | 15 itens (esperado 1) | passa |
+| V-13 resource_id inexistente → 404 (BUG-04/BE-04) | **FALHA** | status 500 (esperado 404) | passa |
+| V-14 resource_id não numérico "abc" → 400 (BUG-04) | **FALHA** | status 500 (esperado 400) | passa |
+| V-15 lista em ordem de start_time → 200 | passa |  | passa |
+| V-16 id existente → 200 | passa |  | passa |
+| V-17 id inexistente → 404 | **FALHA** | status certo, sem `code` no corpo (envelope de BE-04) | passa |
+| V-18 id não numérico "abc" → 400 (BUG-04) | **FALHA** | status 500 (esperado 400) | passa |
+| V-19 scheduled → cancelled → 200 | passa |  | passa |
+| V-20 scheduled → completed → 200 | passa |  | passa |
+| V-21 "banana" → 400 e o status no banco não muda (BUG-03) | **FALHA** | status 200 (esperado 400) | passa |
+| V-22 corpo sem status → 400 e o status no banco não muda (BUG-03) | **FALHA** | status 200 (esperado 400) | passa |
+| V-22b status null → 400 e o status no banco não muda (BUG-03) | **FALHA** | status 200 (esperado 400) | passa |
+| V-23 cancelled → completed → 409 INVALID_STATUS_TRANSITION (BE-03) | **FALHA** | status 200 (esperado 409) | passa |
+| V-23 cancelled → scheduled → 409 INVALID_STATUS_TRANSITION (BE-03) | **FALHA** | status 200 (esperado 409) | passa |
+| V-23 completed → cancelled → 409 INVALID_STATUS_TRANSITION (BE-03) | **FALHA** | status 200 (esperado 409) | passa |
+| V-23 completed → scheduled → 409 INVALID_STATUS_TRANSITION (BE-03) | **FALHA** | status 200 (esperado 409) | passa |
+| V-23 scheduled → scheduled → 409 INVALID_STATUS_TRANSITION (BE-03) | **FALHA** | status 200 (esperado 409) | passa |
+| V-24 id inexistente → 404 | passa |  | passa |
+| V-25 id não numérico "abc" → 400 (BUG-04) | **FALHA** | status 500 (esperado 400) | passa |
+| V-26 id existente → 200 e o GET seguinte dá 404 | passa |  | passa |
+| V-27 id inexistente → 404 | passa |  | passa |
+| V-28 id não numérico "abc" → 400 (BUG-04) | **FALHA** | status 500 (esperado 400) | passa |
+| V-31 INSERT direto sobreposto falha com 23P01 (BE-01) | **FALHA** | o banco aceitou (constraint ausente) | passa |
+| V-32 INSERT direto com janela invertida falha com 23514 (BE-02) | **FALHA** | o banco aceitou (constraint ausente) | passa |
+| V-33 UPDATE direto com status fora do enum falha com 23514 (BE-03) | **FALHA** | o banco aceitou (constraint ausente) | passa |
+| R-01 cria com corpo completo e válido → 201 | passa |  | passa |
+| R-02 assume capacidade 1 quando capacity é omitido → 201 | passa |  | passa |
+| R-03 sem name → 400 sem gravar | **FALHA** | status certo, sem `code` no corpo (envelope de BE-04) | passa |
+| R-04 sem type → 400 sem gravar | **FALHA** | status certo, sem `code` no corpo (envelope de BE-04) | passa |
+| R-05 recusa tipo fora do enum, "sofa" → 400 (BUG-10, #47) | passa |  | passa |
+| R-06 recusa capacity 0 → 400 (BUG-09, #47) | passa |  | passa |
+| R-07 recusa capacity negativa → 400 (BUG-09, #47) | passa |  | passa |
+| R-08 base vazia → 200 e [] | passa |  | passa |
+| R-09 devolve os recursos em ordem de id → 200 | passa |  | passa |
+| R-10 id existente → 200 | passa |  | passa |
+| R-11 id inexistente → 404 | **FALHA** | status certo, sem `code` no corpo (envelope de BE-04) | passa |
+| R-12 id não numérico "abc" → 400 (BUG-04) | **FALHA** | status 500 (esperado 400) | passa |
+| R-13 corpo completo → 200 com os três campos trocados | passa |  | passa |
+| R-14 corpo parcial (só name) → 200 preservando o resto (BUG-05) | **FALHA** | status 500 (esperado 200) | passa |
+| R-14 corpo parcial (só capacity) → 200 preservando o resto (BUG-05) | **FALHA** | status 500 (esperado 200) | passa |
+| R-14 corpo parcial (só type) → 200 preservando o resto (BUG-05) | **FALHA** | status 500 (esperado 200) | passa |
+| R-15 corpo vazio {} → 400 (BUG-05) | **FALHA** | status 500 (esperado 400) | passa |
+| R-15b name só com espaços → 400 | **FALHA** | status 500 (esperado 400) | passa |
+| R-16 id inexistente → 404 | **FALHA** | status certo, sem `code` no corpo (envelope de BE-04) | passa |
+| R-17 id não numérico "abc" → 400 (BUG-04) | **FALHA** | status 500 (esperado 400) | passa |
+| R-18 id existente → 200 e o GET seguinte dá 404 | passa |  | passa |
+| R-19 id inexistente → 404 | passa |  | passa |
+| R-20 id não numérico "abc" → 400 (BUG-04) | **FALHA** | status 500 (esperado 400) | passa |
+| R-21 recusa apagar espaço com reserva ativa (BUG-06, aguarda decisão de produto) | todo |  | todo |
+| R-22 apagar o espaço apaga as reservas dele em cascata (BUG-06, documenta o comportamento) | passa |  | passa |
+| A-01 GET / → 200 em JSON | **FALHA** |  | passa |
+| A-02 rota desconhecida → 404 em JSON, não em HTML (BE-04) | **FALHA** | Expected pattern: /application\/json/ | passa |
+| A-03 JSON malformado → 400, não 500 (BE-04, #49) | passa |  | passa |
+| A-03b corpo acima de 100kb → 413, não 500 (BE-08, #49) | **FALHA** |  | passa |
+| A-04 envelope de erro uniforme em GET /api/resources/abc: { error, code } e nada de stack | **FALHA** | Expected: "string" | passa |
+| A-04 envelope de erro uniforme em GET /api/reservations/999999: { error, code } e nada de stack | **FALHA** | Expected: "string" | passa |
+| A-04 envelope de erro uniforme em POST /api/reservations: { error, code } e nada de stack | **FALHA** | Expected: "string" | passa |
+| A-04 envelope de erro uniforme em PUT /api/resources/1: { error, code } e nada de stack | **FALHA** | Expected: "string" | passa |
+| A-04 envelope de erro uniforme em DELETE /api/nope: { error, code } e nada de stack | **FALHA** | Expected: "string" | passa |
+| A-05 GET /health → 200 com banco de pé (BUG-11) | **FALHA** | status 404 (esperado 200) | passa |
+| A-06 cabeçalhos de segurança e sem X-Powered-By (BE-08) | **FALHA** |  | passa |
+| A-07 CORS recusa origem desconhecida com 403 e aceita a do client (BE-08) | **FALHA** | status 200 (esperado 403) | passa |
+| A-08 escrita acima do limite → 429 e leitura não é limitada (BE-08) | pulado |  | passa |

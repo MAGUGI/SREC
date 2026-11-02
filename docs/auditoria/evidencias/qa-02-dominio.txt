@@ -1,0 +1,23 @@
+# QA-02 — cobertura da camada de domínio e das regras puras
+# Comando: cd server && npx jest --selectProjects unit --coverage --coverageReporters=text --collectCoverageFrom='src/domain/**/*.js' --collectCoverageFrom='src/validators/**/*.js' --collectCoverageFrom='src/utils/datetime.js'
+# Commit medido: 2065ae2 · Postgres desligado (DATABASE_URL apontando para porta 1)
+
+  Option "maxWorkers" is not supported in an individual project configuration.
+Running one project: unit
+--------------------------|---------|----------|---------|---------|-------------------
+File                      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+--------------------------|---------|----------|---------|---------|-------------------
+All files                 |     100 |      100 |     100 |     100 |                   
+ domain                   |     100 |      100 |     100 |     100 |                   
+  reservationStatus.js    |     100 |      100 |     100 |     100 |                   
+  timeWindow.js           |     100 |      100 |     100 |     100 |                   
+ utils                    |     100 |      100 |     100 |     100 |                   
+  datetime.js             |     100 |      100 |     100 |     100 |                   
+ validators               |     100 |      100 |     100 |     100 |                   
+  reservationValidator.js |     100 |      100 |     100 |     100 |                   
+--------------------------|---------|----------|---------|---------|-------------------
+Test Suites: 13 passed, 13 total
+Tests:       138 passed, 138 total
+Snapshots:   0 total
+Time:        1.207 s
+Ran all test suites.

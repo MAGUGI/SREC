@@ -1,4 +1,5 @@
 const db = require('../config/database');
+const { ReservationStatus } = require('../domain/reservationStatus');
 
 const ReservationModel = {
   async create(resource_id, user_name, start_time, end_time) {
@@ -29,14 +30,14 @@ const ReservationModel = {
     return result.rows;
   },
 
-  async updateStatus(id, status) {
+  async updateStatus(id, status, allowedCurrentStatuses) {
     const query = `
       UPDATE reservations
       SET status = $1, updated_at = CURRENT_TIMESTAMP
-      WHERE id = $2
+      WHERE id = $2 AND status = ANY($3::varchar[])
       RETURNING *;
     `;
-    const result = await db.query(query, [status, id]);
+    const result = await db.query(query, [status, id, allowedCurrentStatuses]);
     return result.rows[0];
   },
 
@@ -50,13 +51,11 @@ const ReservationModel = {
     const query = `
       SELECT id FROM reservations 
       WHERE resource_id = $1 
-      AND status != 'cancelled'
-      AND (
-        (start_time < $3 AND end_time > $2)
-      )
+      AND status <> $4
+      AND start_time < $3 AND end_time > $2
       LIMIT 1;
     `;
-    const result = await db.query(query, [resource_id, start_time, end_time]);
+    const result = await db.query(query, [resource_id, start_time, end_time, ReservationStatus.CANCELLED]);
     return result.rows.length === 0;
   },
 };

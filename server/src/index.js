@@ -1,33 +1,37 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+const { getEnv, ConfigError } = require('./config/env');
 
-const initDb = require('./config/initDb');
-const resourceRoutes = require('./routes/resourceRoutes');
-const reservationRoutes = require('./routes/reservationRoutes');
+// Falha rápida: configuração inválida impede o boot e nomeia cada variável errada.
+let env;
+try {
+  env = getEnv();
+} catch (err) {
+  if (!(err instanceof ConfigError) || require.main !== module) throw err;
+  console.error(`\n[boot] ${err.message}\n`);
+  process.exit(1);
+}
 
-const app = express();
-const PORT = process.env.PORT || 5000;
+const { APP_TIMEZONE } = require('./config/time');
+process.env.TZ = process.env.TZ || APP_TIMEZONE;
+const createApp = require('./app');
+const { pool } = require('./config/database');
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+const PORT = env.port;
+const app = createApp();
 
-// Routes
-app.use('/api/resources', resourceRoutes);
-app.use('/api/reservations', reservationRoutes);
+async function startServer() {
+  const server = app.listen(PORT, () => console.log(`[boot] SREC ouvindo na porta ${PORT}`));
+  const shutdown = () => server.close(() => pool.end(() => process.exit(0)));
+  process.once('SIGTERM', shutdown);
+  process.once('SIGINT', shutdown);
+  return server;
+}
 
-// Root Endpoint
-app.get('/', (req, res) => {
-  res.send('SREC Coworking API is running...');
-});
-
-// Initialize DB and start server
-const startServer = async () => {
-  await initDb();
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+if (require.main === module) {
+  startServer().catch(async (err) => {
+    console.error('[boot] falha ao iniciar; abortando', err.message);
+    await pool.end().catch(() => {});
+    process.exit(1);
   });
-};
+}
 
-startServer();
+module.exports = app;

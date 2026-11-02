@@ -1,0 +1,117 @@
+name: Bug do cliente
+description: Defeito que produz comportamento errado no sistema recebido.
+title: 'BUG — '
+labels: ['bug do cliente', 'N2']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Antes de abrir: confira se o defeito já está em
+        [`docs/auditoria/bugs-do-cliente.md`](https://github.com/igorSeberino/srec/blob/main/docs/auditoria/bugs-do-cliente.md).
+        Se já estiver, use o ID existente (BUG-01 a BUG-15) no título.
+
+  - type: input
+    id: bug-id
+    attributes:
+      label: ID do catálogo
+      description: BUG-01 a BUG-15 se já catalogado; "novo" se foi encontrado agora.
+      placeholder: BUG-04
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severidade
+    attributes:
+      label: Severidade
+      description: |
+        Escala de `docs/auditoria/bugs-do-cliente.md`.
+        O PO aplica a label `sev:` correspondente na triagem.
+      options:
+        - 'CRÍTICO — quebra a regra de negócio central ou perde dado do usuário'
+        - 'ALTO — produz resposta errada, derruba o serviço ou corrompe estado'
+        - 'MÉDIO — permite dado inválido entrar no sistema ou degrada a operação'
+        - 'BAIXO — incomoda o usuário ou suja o código, sem perder dado'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      description: O PO aplica a label `area:` correspondente na triagem.
+      options:
+        - 'backend'
+        - 'frontend'
+        - 'infra'
+        - 'docs'
+        - 'qa'
+    validations:
+      required: true
+
+  - type: input
+    id: onde
+    attributes:
+      label: Arquivo e linha
+      description: Exigência da Definition of Ready. Sem arquivo e linha, a issue não entra em desenvolvimento.
+      placeholder: server/src/controllers/reservationController.js:12-28
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproducao
+    attributes:
+      label: Como reproduzir
+      description: Passos numerados ou comando que qualquer pessoa do time roda e vê o defeito.
+      render: shell
+      placeholder: |
+        curl -i http://localhost:5000/api/resources/abc
+    validations:
+      required: true
+
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Resultado esperado
+      placeholder: '400 Bad Request, com mensagem indicando que o id precisa ser numérico.'
+    validations:
+      required: true
+
+  - type: textarea
+    id: obtido
+    attributes:
+      label: Resultado obtido
+      placeholder: '500 {"error":"Internal server error"}'
+    validations:
+      required: true
+
+  - type: textarea
+    id: impacto
+    attributes:
+      label: Impacto
+      description: O que acontece com o usuário ou com o dado. Uma ou duas frases.
+    validations:
+      required: true
+
+  - type: input
+    id: spec
+    attributes:
+      label: Spec que corrige
+      description: Caminho da spec de implementação, se já existir.
+      placeholder: docs/specs/be-05-proper-http-status-codes/implementacao.md
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: dor
+    attributes:
+      label: Definition of Ready
+      description: 'Conforme `docs/time/overview.md`. O PO valida antes de priorizar.'
+      options:
+        - label: Existe evidência do problema (comando de reprodução ou número medido).
+          required: true
+        - label: Os critérios de aceite estão objetivos e verificáveis.
+          required: true
+        - label: As dependências de outras issues estão declaradas.
+          required: true
+        - label: Está claro qual item da rubrica da N2 este trabalho pontua.
+          required: true

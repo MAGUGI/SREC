@@ -1,82 +1,50 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+import { request } from './http';
+import { localInputToIso } from '../lib/datetime';
 
 export const api = {
   // Resources
-  async getResources() {
-    const res = await fetch(`${API_BASE_URL}/resources`);
-    if (!res.ok) throw new Error('Falha ao carregar recursos');
-    return res.json();
+  getResources(options) {
+    return request('/resources', options);
   },
 
-  async createResource(data) {
-    const res = await fetch(`${API_BASE_URL}/resources`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Erro ao criar recurso');
-    }
-    return res.json();
+  getResource(id, options) {
+    return request(`/resources/${id}`, options);
   },
 
-  async updateResource(id, data) {
-    const res = await fetch(`${API_BASE_URL}/resources/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Erro ao atualizar recurso');
-    }
-    return res.json();
+  createResource(data) {
+    return request('/resources', { method: 'POST', body: data });
   },
 
-  async deleteResource(id) {
-    const res = await fetch(`${API_BASE_URL}/resources/${id}`, {
-      method: 'DELETE',
-    });
-    if (!res.ok) throw new Error('Erro ao deletar recurso');
-    return res.json();
+  updateResource(id, data) {
+    return request(`/resources/${id}`, { method: 'PUT', body: data });
+  },
+
+  deleteResource(id) {
+    return request(`/resources/${id}`, { method: 'DELETE' });
   },
 
   // Reservations
-  async getReservations() {
-    const res = await fetch(`${API_BASE_URL}/reservations`);
-    if (!res.ok) throw new Error('Falha ao carregar reservas');
-    return res.json();
+  getReservations(options) {
+    return request('/reservations', options);
   },
 
-  async createReservation(data) {
-    const res = await fetch(`${API_BASE_URL}/reservations`, {
+  createReservation(data) {
+    return request('/reservations', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: {
+        ...data,
+        // BE-07 contract: times always go out as ISO 8601 with offset.
+        start_time: localInputToIso(data.start_time),
+        end_time: localInputToIso(data.end_time),
+      },
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Erro ao criar reserva');
-    }
-    return res.json();
   },
 
-  async updateReservationStatus(id, status) {
-    const res = await fetch(`${API_BASE_URL}/reservations/${id}/status`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status }),
-    });
-    if (!res.ok) throw new Error('Erro ao atualizar status');
-    return res.json();
+  updateReservationStatus(id, status) {
+    return request(`/reservations/${id}/status`, { method: 'PATCH', body: { status } });
   },
 
-  async deleteReservation(id) {
-    const res = await fetch(`${API_BASE_URL}/reservations/${id}`, {
-      method: 'DELETE',
-    });
-    if (!res.ok) throw new Error('Erro ao cancelar reserva');
-    return res.json();
+  deleteReservation(id) {
+    return request(`/reservations/${id}`, { method: 'DELETE' });
   },
 };

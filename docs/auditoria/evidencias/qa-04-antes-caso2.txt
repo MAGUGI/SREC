@@ -1,0 +1,57 @@
+QA-04 — Caso 2: validacao da coluna 'antes' no commit recebido
+Commit medido: 8431181eac44a26cba192de7310910d17b3d6301
+Ambiente: v24.22.0, npm 11.19.1, Windows 11, npm ci limpo
+
+$ npx jest --coverage --coverageReporters=text --collectCoverageFrom='src/**/*.js'
+  console.log
+    ◇ injected env (0) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+---------------------------|---------|----------|---------|---------|-------------------
+File                       | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------------------|---------|----------|---------|---------|-------------------
+All files                  |    6.14 |        0 |    3.57 |    6.14 |                   
+ src                       |       0 |        0 |       0 |       0 |                   
+  index.js                 |       0 |        0 |       0 |       0 | 1-33              
+ src/config                |   33.33 |      100 |       0 |   33.33 |                   
+  database.js              |   71.42 |      100 |       0 |   71.42 | 9,13              
+  initDb.js                |       0 |      100 |       0 |       0 | 1-33              
+ src/controllers           |       0 |        0 |       0 |       0 |                   
+  reservationController.js |       0 |        0 |       0 |       0 | 1-90              
+  resourceController.js    |       0 |        0 |       0 |       0 | 1-72              
+ src/models                |   14.28 |      100 |    8.33 |   14.28 |                   
+  reservationModel.js      |      25 |      100 |   14.28 |      25 | 5-46              
+  resourceModel.js         |       0 |      100 |       0 |       0 | 1-44              
+ src/routes                |       0 |      100 |     100 |       0 |                   
+  reservationRoutes.js     |       0 |      100 |     100 |       0 | 1-11              
+  resourceRoutes.js        |       0 |      100 |     100 |       0 | 1-11              
+---------------------------|---------|----------|---------|---------|-------------------
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        17.098 s
+Ran all test suites.
+
+$ npx jest --listTests | wc -l
+1
+$ wc -l ../client/src/App.jsx
+351 ../client/src/App.jsx
+$ grep -c "catch (err)" src/controllers/*.js
+src/controllers/reservationController.js:5
+src/controllers/resourceController.js:5
+$ grep -c "<label>" ../client/src/App.jsx
+7
+$ grep -rc eslint-disable ../client/src
+../client/src/App.css:0
+../client/src/App.jsx:2
+../client/src/assets/hero.png:0
+../client/src/assets/react.svg:0
+../client/src/assets/vite.svg:0
+../client/src/index.css:0
+../client/src/main.jsx:0
+../client/src/services/api.js:0
+$ grep -ciE "check|unique|exclude" src/config/initDb.js
+0
+$ grep -ci index src/config/initDb.js
+0

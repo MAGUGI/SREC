@@ -1,0 +1,45 @@
+# CODEOWNERS — SREC, entrega N2
+#
+# Este arquivo só tem efeito de REVISÃO OBRIGATÓRIA porque a proteção de `main`
+# está com require_code_owner_reviews: true. Ver a seção "Decisão" de
+# docs/specs/ops-05-branch-protection-and-templates/implementacao.md.
+#
+# Duas regras do GitHub que explicam o formato abaixo:
+#
+# 1. Vale a ÚLTIMA linha que casa com o caminho, não a soma das linhas. Uma
+#    linha "/server/ @adrian-cesar" sozinha tiraria o QA do portão do backend.
+#    Por isso @igorSeberino (QA) aparece em TODAS as linhas, em primeiro lugar.
+# 2. Dentro de uma linha a semântica é OU: a aprovação de qualquer um dos donos
+#    satisfaz o portão. Como cada área da N2 tem exatamente um autor, e autor
+#    não aprova o próprio PR, na prática quem aprova é o QA — exceto nos PRs do
+#    próprio QA, aprovados pelo revisor substituto (@adrian-cesar). Por isso o
+#    Adrian é dono de /server/ e de /docs/, as áreas que os PRs do QA tocam.
+#    Regra escrita: aprovação do Adrian só vale em PR de autoria do Igor.
+#
+# Dono de código precisa ter permissão de escrita no repositório. Confira com:
+#   gh api /repos/igorSeberino/srec/codeowners/errors
+
+# Padrão: o QA é dono de tudo.
+# Rubrica N2 — 1,5 pt de "Pull Requests aprovados pelo QA".
+*                           @igorSeberino
+
+# Backend Express + PostgreSQL
+/server/                    @igorSeberino @adrian-cesar
+
+# Frontend React + Vite
+/client/                    @igorSeberino @RenatoColin
+
+# Requisitos, arquitetura, auditoria, specs e handoff.
+# @adrian-cesar está aqui como revisor substituto dos PRs do QA (QA-03, QA-04).
+/docs/                      @igorSeberino @adrian-cesar
+
+# Automação, CI, templates e ambiente reproduzível.
+# Vem depois de /server/ e /client/ de propósito: os Dockerfiles são do DevOps,
+# e a última linha que casa é a que vale.
+/.github/                   @igorSeberino @gabrielcarvallho
+/docker-compose.yml         @igorSeberino @gabrielcarvallho
+/docker-compose.test.yml    @igorSeberino @gabrielcarvallho
+/server/Dockerfile          @igorSeberino @gabrielcarvallho
+/server/docker-compose.test.yml @igorSeberino @gabrielcarvallho
+/client/Dockerfile          @igorSeberino @gabrielcarvallho
+/client/nginx.conf          @igorSeberino @gabrielcarvallho

@@ -1,0 +1,70 @@
+QA-04 — C-10 e C-11 no banco (fonte de verdade do schema depois de OPS-02)
+Banco A: qa04_main no Postgres de teste (porta 5433), criado vazio e migrado com 'node scripts/migrate.js' do origin/main 28d6313916e556f1ca7724331ce260f20d132798
+Validade para o commit do relatorio (9662616): `git diff --stat 28d6313 9662616 -- server/migrations server/scripts` e vazio.
+(A re-execucao em 9662616 nao foi possivel: o daemon do Docker parou durante a medicao.)
+
+$ psql -c "SELECT c.contype, count(*) FROM pg_constraint c JOIN pg_class t ON t.oid = c.conrelid WHERE t.relname IN ('resources','reservations') AND c.contype NOT IN ('p','f') GROUP BY c.contype ORDER BY c.contype;"
+ contype | count 
+---------+-------
+ c       |     2
+ x       |     1
+(2 rows)
+
+
+$ psql -c "SELECT t.relname, c.contype, c.conname, pg_get_constraintdef(c.oid) FROM pg_constraint c JOIN pg_class t ON t.oid = c.conrelid WHERE t.relname IN ('resources','reservations') AND c.contype NOT IN ('p','f') ORDER BY 1,2,3;"
+   relname    | contype |            conname             |                                                               pg_get_constraintdef                                                               
+--------------+---------+--------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------
+ reservations | c       | reservations_status_check      | CHECK (((status)::text = ANY ((ARRAY['scheduled'::character varying, 'cancelled'::character varying, 'completed'::character varying])::text[])))
+ reservations | c       | reservations_time_window_check | CHECK ((end_time > start_time))
+ reservations | x       | reservations_no_overlap        | EXCLUDE USING gist (resource_id WITH =, tstzrange(start_time, end_time) WITH &&) WHERE (((status)::text <> 'cancelled'::text))
+(3 rows)
+
+
+$ psql -c "SELECT tablename, indexname, indexdef FROM pg_indexes WHERE tablename IN ('resources','reservations') AND indexname NOT LIKE '%_pkey' ORDER BY 1, 2;"
+  tablename   |        indexname        |                                                                             indexdef                                                                              
+--------------+-------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ reservations | reservations_no_overlap | CREATE INDEX reservations_no_overlap ON public.reservations USING gist (resource_id, tstzrange(start_time, end_time)) WHERE ((status)::text <> 'cancelled'::text)
+(1 row)
+
+
+$ psql -c "SELECT filename, applied_at FROM schema_migrations ORDER BY filename;"
+               filename                |          applied_at           
+---------------------------------------+-------------------------------
+ 0000_initial_schema.sql               | 2026-10-23 18:20:52.702944+00
+ 0001_timestamptz.sql                  | 2026-10-23 18:20:52.711692+00
+ 001_reservation_no_overlap.sql        | 2026-10-23 18:20:52.765849+00
+ 002_reservation_time_window_check.sql | 2026-10-23 18:20:52.771102+00
+ 003_reservation_status_check.sql      | 2026-10-23 18:20:52.77405+00
+(5 rows)
+
+
+$ psql -c "SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name IN ('resources','reservations') AND data_type LIKE 'timestamp%' ORDER BY 1,2;"
+  table_name  | column_name |        data_type         
+--------------+-------------+--------------------------
+ reservations | created_at  | timestamp with time zone
+ reservations | end_time    | timestamp with time zone
+ reservations | start_time  | timestamp with time zone
+ reservations | updated_at  | timestamp with time zone
+ resources    | created_at  | timestamp with time zone
+ resources    | updated_at  | timestamp with time zone
+(6 rows)
+
+
+Banco B: stack de desenvolvimento em execucao (docker exec srec-postgres psql -U srec -d srec), container srec-server em C:\Users\igors\srec-run, checkout 39237e3 (anterior ao #54)
+
+$ psql -c "SELECT c.contype, count(*) FROM pg_constraint c JOIN pg_class t ON t.oid = c.conrelid WHERE t.relname IN ('resources','reservations') AND c.contype NOT IN ('p','f') GROUP BY c.contype ORDER BY c.contype;"
+ contype | count 
+---------+-------
+(0 rows)
+
+
+$ psql -c "SELECT tablename, indexname, indexdef FROM pg_indexes WHERE tablename IN ('resources','reservations') AND indexname NOT LIKE '%_pkey' ORDER BY 1, 2;"
+ tablename | indexname | indexdef 
+-----------+-----------+----------
+(0 rows)
+
+
+$ psql -c "SELECT filename, applied_at FROM schema_migrations ORDER BY filename;"
+ERROR:  relation "schema_migrations" does not exist
+LINE 1: SELECT filename, applied_at FROM schema_migrations ORDER BY ...
+                                         ^

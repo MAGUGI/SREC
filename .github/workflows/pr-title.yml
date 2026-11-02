@@ -1,0 +1,86 @@
+name: Padrão de commit
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-title-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  pr-title:
+    name: Título do PR (Conventional Commits)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validar o título contra Conventional Commits
+        env:
+          # O título vem por variável de ambiente, NUNCA interpolado dentro do
+          # script: ${{ ... }} direto no `run` é injeção de comando.
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -uo pipefail
+
+          # Tipos da convenção da N2 (docs/time/overview.md) mais `style`,
+          # usado por OPS-03 para commits de reformatação, e `revert`.
+          TIPOS='feat|fix|refactor|docs|test|chore|perf|build|ci|style|revert'
+          PADRAO="^(${TIPOS})(\([a-z0-9][a-z0-9._/-]*\))?!?: .+$"
+
+          erros=0
+
+          echo "Título recebido: ${PR_TITLE}"
+
+          if ! printf '%s' "$PR_TITLE" | grep -Eq "$PADRAO"; then
+            echo "::error::O título não segue Conventional Commits."
+            echo "::error::Formato: <tipo>(<escopo opcional>): <descrição no imperativo>"
+            echo "::error::Tipos aceitos: ${TIPOS}"
+            erros=$((erros + 1))
+          fi
+
+          if [ "${#PR_TITLE}" -gt 72 ]; then
+            echo "::error::O título tem ${#PR_TITLE} caracteres; o limite é 72."
+            erros=$((erros + 1))
+          fi
+
+          case "$PR_TITLE" in
+            *.) echo "::error::O título não termina em ponto."; erros=$((erros + 1)) ;;
+          esac
+
+          descricao="${PR_TITLE#*: }"
+          primeira="$(printf '%s' "$descricao" | cut -c1)"
+          if printf '%s' "$primeira" | grep -q '[[:upper:]]'; then
+            echo "::error::A descrição começa em minúscula: '${primeira}' → '$(printf '%s' "$primeira" | tr '[:upper:]' '[:lower:]')'."
+            erros=$((erros + 1))
+          fi
+
+          # Heurística de imperativo: só AVISA, não reprova. Português tem
+          # exceção suficiente para que reprovar aqui gere falso positivo.
+          primeiro_verbo="$(printf '%s' "$descricao" | cut -d' ' -f1)"
+          if printf '%s' "$primeiro_verbo" | grep -Eq '(ado|ada|ados|adas|indo|ando|endo)$'; then
+            echo "::warning::'${primeiro_verbo}' parece particípio ou gerúndio. A convenção é imperativo: 'adicionar', não 'adicionado'/'adicionando'."
+          fi
+
+          {
+            echo '### Padrão de commit'
+            echo ''
+            echo '```'
+            echo "${PR_TITLE}"
+            echo '```'
+            echo ''
+            if [ "$erros" -eq 0 ]; then
+              echo 'Título válido. Com squash merge e `squash_merge_commit_title=PR_TITLE`,'
+              echo 'é exatamente esta a mensagem que entra na `main`.'
+            else
+              echo "**${erros} problema(s).** Exemplos válidos:"
+              echo ''
+              echo '* `fix(reservations): impedir dupla reserva concorrente`'
+              echo '* `refactor(client): extrair formulário de reserva de App.jsx`'
+              echo '* `ci: subir postgres no job de backend`'
+              echo '* `docs(qa): adicionar roteiro de regressão manual`'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          exit "$erros"

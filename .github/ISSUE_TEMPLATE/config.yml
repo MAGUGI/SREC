@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Relatório de auditoria da N2
+    url: https://github.com/igorSeberino/srec/blob/main/docs/auditoria/relatorio-n2.md
+    about: Antes de abrir, confira se o achado já está catalogado (15 bugs, 14 code smells, 12 divergências).
+  - name: Papéis, DoR e DoD do time
+    url: https://github.com/igorSeberino/srec/blob/main/docs/time/overview.md
+    about: Quem aprova o quê, e o que é preciso para a issue entrar em desenvolvimento.
