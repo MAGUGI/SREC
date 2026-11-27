@@ -1,0 +1,19 @@
+services:
+  postgres-test:
+    image: postgres:16-alpine
+    container_name: srec-postgres-test
+    environment:
+      POSTGRES_USER: srec
+      POSTGRES_PASSWORD: srec
+      POSTGRES_DB: srec_test
+    ports:
+      - "5433:5432"
+    # Dados em memória: o banco de teste é descartável por construção e
+    # nunca encosta no volume do banco de desenvolvimento (porta 5432).
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U srec -d srec_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 30

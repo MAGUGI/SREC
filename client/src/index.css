@@ -124,10 +124,35 @@ header {
   font-size: 0.875rem;
 }
 
+/* Keyboard focus ring. The received `ring` declaration is not CSS (it is a
+   Tailwind utility) and `outline: none` left focus invisible. #1d4ed8 gives
+   6.3:1 on white and 5.8:1 on the body, above WCAG 2.2 1.4.11 (3:1). */
+.form-control:focus-visible,
+.btn:focus-visible,
+.tab-btn:focus-visible,
+.btn-outline-danger:focus-visible,
+.alert a:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
 .form-control:focus {
-  outline: none;
   border-color: #3b82f6;
-  ring: 2px solid #93c5fd;
+}
+
+.form-control.is-invalid {
+  border-color: #ef4444;
+}
+
+.form-error {
+  font-size: 0.8125rem;
+  color: #991b1b;
+  margin-top: 0.25rem;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .btn {
@@ -175,6 +200,11 @@ header {
   background-color: #fee2e2;
 }
 
+.btn-outline-success {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
 .item-list {
   display: flex;
   flex-direction: column;
@@ -199,6 +229,20 @@ header {
 .item-details p {
   font-size: 0.875rem;
   color: #6b7280;
+}
+
+.icon-inline {
+  display: inline;
+}
+
+.item-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* The live region container stays in the DOM while empty, taking no space. */
+.alert-placeholder {
+  display: none;
 }
 
 .alert {
@@ -242,4 +286,56 @@ header {
 .status-completed {
   background-color: #dcfce7;
   color: #166534;
+}
+
+/* Confirmation dialog (ConfirmDialog) */
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+.dialog {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  max-width: 32rem;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.dialog-list {
+  margin: 0.5rem 0 0.75rem 1.25rem;
+  font-size: 0.875rem;
+}
+
+.dialog-hint {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+.dialog-ack {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  margin-top: 0.75rem;
+  color: #991b1b;
+}
+
+.btn-outline-primary {
+  border-color: #3b82f6;
+  color: #3b82f6;
 }

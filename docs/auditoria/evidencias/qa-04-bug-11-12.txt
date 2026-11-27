@@ -1,0 +1,93 @@
+##### ANTES: codigo recebido — commit 8431181eac44a26cba192de7310910d17b3d6301
+
+=== BUG-11 (roteiro C-12): servidor sobe com o banco inacessivel?
+$ DATABASE_URL=postgres://srec:***@localhost:5999/nada PORT=5097 node src/index.js   # nada escuta na 5999
+processo apos 6 s: vivo
+GET /              -> 200
+GET /health        -> 404
+GET /api/resources -> 500
+--- log do processo:
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+Error creating tables AggregateError [ECONNREFUSED]: 
+    at C:\Users\igors\srec-qa04-base\server\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async createTables (C:\Users\igors\srec-qa04-base\server\src\config\initDb.js:26:5)
+    at async startServer (C:\Users\igors\srec-qa04-base\server\src\index.js:27:3) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:5999
+        at createConnectionError (node:net:2124:14)
+        at afterConnectMultiple (node:net:2154:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 5999
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:5999
+        at createConnectionError (node:net:2124:14)
+
+=== BUG-12 (roteiro C-13): queda do Postgres com o servidor rodando
+$ DATABASE_URL=postgres://srec:***@localhost:5455/srec PORT=5096 node src/index.js
+com o banco de pe: processo vivo; GET /api/resources -> 200; GET /health -> 404
+$ docker stop qa04-pg-bug12   # derruba o banco descartavel
+30 s depois da queda: processo morto; GET /api/resources -> 000; GET /health -> 000
+--- log do processo:
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+Connected to PostgreSQL Database
+Database tables ensured
+Server is running on port 5096
+node:events:505
+    throw er; // Unhandled 'error' event
+    ^
+
+error: terminating connection due to administrator command
+    at parseErrorMessage (C:\Users\igors\srec-qa04-base\server\node_modules\pg-protocol\dist\parser.js:306:11)
+    at Parser.handlePacket (C:\Users\igors\srec-qa04-base\server\node_modules\pg-protocol\dist\parser.js:143:27)
+    at Parser.parse (C:\Users\igors\srec-qa04-base\server\node_modules\pg-protocol\dist\parser.js:37:38)
+    at Socket.<anonymous> (C:\Users\igors\srec-qa04-base\server\node_modules\pg-protocol\dist\index.js:12:42)
+    at Socket.emit (node:events:514:28)
+    at addChunk (node:internal/streams/readable:569:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:520:3)
+    at Readable.push (node:internal/streams/readable:400:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:194:23)
+Emitted 'error' event on BoundPool instance at:
+    at Client.idleListener (C:\Users\igors\srec-qa04-base\server\node_modules\pg-pool\index.js:62:10)
+    at Client.emit (node:events:514:28)
+    at Client._handleErrorEvent (C:\Users\igors\srec-qa04-base\server\node_modules\pg\lib\client.js:422:10)
+    at Client._handleErrorMessage (C:\Users\igors\srec-qa04-base\server\node_modules\pg\lib\client.js:433:12)
+    at Connection.emit (node:events:514:28)
+    at C:\Users\igors\srec-qa04-base\server\node_modules\pg\lib\connection.js:137:12
+    at Parser.parse (C:\Users\igors\srec-qa04-base\server\node_modules\pg-protocol\dist\parser.js:38:17)
+    at Socket.<anonymous> (C:\Users\igors\srec-qa04-base\server\node_modules\pg-protocol\dist\index.js:12:42)
+    at Socket.emit (node:events:514:28)
+    at addChunk (node:internal/streams/readable:569:12) {
+
+##### DEPOIS: origin/main — commit 9662616140cb9efa11169b0d5db5a0decb7d5b68
+
+=== BUG-11 (roteiro C-12): servidor sobe com o banco inacessivel?
+$ DATABASE_URL=postgres://srec:***@localhost:5999/nada PORT=5097 node src/index.js   # nada escuta na 5999
+processo apos 6 s: vivo
+GET /              -> 200
+GET /health        -> 503
+GET /api/resources -> 500
+--- log do processo:
+[boot] SREC ouvindo na porta 5097
+{"level":"error","timestamp":"2026-10-23T18:39:56.724Z","method":"GET","path":"/api/resources","statusCode":500,"code":"INTERNAL_ERROR","sqlstate":"ECONNREFUSED","reason":"","stack":"AggregateError [ECONNREFUSED]: \n    at C:\\Users\\igors\\srec-qa04\\server\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Object.findAll (C:\\Users\\igors\\srec-qa04\\server\\src\\models\\resourceModel.js:16:20)\n    at async C:\\Users\\igors\\srec-qa04\\server\\src\\controllers\\resourceController.js:8:62"}
+
+=== BUG-12 (roteiro C-13): queda do Postgres com o servidor rodando
+$ node scripts/migrate.js
+Connected to PostgreSQL Database
+[migrate] 5 migração(ões) no diretório.
+$ DATABASE_URL=postgres://srec:***@localhost:5455/srec PORT=5096 node src/index.js
+com o banco de pe: processo vivo; GET /api/resources -> 200; GET /health -> 200
+$ docker stop qa04-pg-bug12   # derruba o banco descartavel
+failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: O sistema não pode encontrar o arquivo especificado.
+30 s depois da queda: processo vivo; GET /api/resources -> 500; GET /health -> 503
+--- log do processo:
+[boot] SREC ouvindo na porta 5096
+Connected to PostgreSQL Database
+{"level":"error","timestamp":"2026-10-23T18:40:42.179Z","method":"GET","path":"/api/resources","statusCode":500,"code":"INTERNAL_ERROR","sqlstate":"ECONNREFUSED","reason":"","stack":"AggregateError [ECONNREFUSED]: \n    at C:\\Users\\igors\\srec-qa04\\server\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Object.findAll (C:\\Users\\igors\\srec-qa04\\server\\src\\models\\resourceModel.js:16:20)\n    at async C:\\Users\\igors\\srec-qa04\\server\\src\\controllers\\resourceController.js:8:62"}
+

@@ -1,0 +1,61 @@
+name: srec
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: srec-postgres
+    environment:
+      POSTGRES_USER: srec
+      POSTGRES_PASSWORD: srec
+      POSTGRES_DB: srec
+    ports:
+      - '5432:5432'
+    volumes:
+      - srec_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U srec -d srec']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  server:
+    build:
+      context: ./server
+      target: production
+    container_name: srec-server
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DATABASE_URL: postgres://srec:srec@postgres:5432/srec
+      CORS_ALLOWED_ORIGINS: http://localhost:5173
+    command: ['sh', '-c', 'npm run db:migrate && npm run start']
+    ports:
+      - '5000:5000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:5000/health >/dev/null || exit 1']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+      target: production
+      args:
+        VITE_API_BASE_URL: http://localhost:5000/api
+    container_name: srec-client
+    ports:
+      - '5173:80'
+    depends_on:
+      - server
+    restart: unless-stopped
+
+volumes:
+  srec_pgdata:

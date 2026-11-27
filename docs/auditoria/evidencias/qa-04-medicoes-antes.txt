@@ -1,0 +1,274 @@
+Commit medido: 8431181eac44a26cba192de7310910d17b3d6301  (Update docs)
+Ambiente: node v24.22.0, npm 11.19.1, Windows 11
+### C-02
+
+$ cd server && npx jest --listTests | wc -l
+1
+[exit=0]
+
+$ cd server && npx jest 2>&1 | grep -E '^(Test Suites|Tests):'
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+[exit=0]
+
+$ cd server && npx jest --selectProjects unit 2>&1 | grep -E '^(Test Suites|Tests):'
+[exit=1]
+### C-03
+
+$ grep -rhoE "\.(get|post|put|patch|delete)\('/api/[^']*'" server/test/integration server/tests/integration | sed -E "s/\('/ /; s/'$//" | sort -u
+grep: server/test/integration: No such file or directory
+grep: server/tests/integration: No such file or directory
+[exit=0]
+### C-04
+
+$ cd server && npm run lint
+
+> server@1.0.0 lint
+> eslint src/
+
+[exit=0]
+
+$ cd client && npm run lint
+
+> client@0.0.0 lint
+> eslint .
+
+[exit=0]
+
+$ cd server && npm run lint:strict 2>&1 | tail -3
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: C:\Users\igors\AppData\Local\npm-cache\_logs\2026-10-23T18_36_48_438Z-debug-0.log
+[exit=0]
+
+$ cd client && npm run lint:strict 2>&1 | tail -3
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: C:\Users\igors\AppData\Local\npm-cache\_logs\2026-10-23T18_36_49_527Z-debug-0.log
+[exit=0]
+### C-05
+
+$ grep -cE 'complexity|max-lines|max-depth|max-params|security|jsx-a11y|eqeqeq' server/eslint.config.js client/eslint.config.js
+server/eslint.config.js:0
+client/eslint.config.js:0
+[exit=1]
+### C-08
+
+$ grep -c 'catch (err)' server/src/controllers/*.js
+server/src/controllers/reservationController.js:5
+server/src/controllers/resourceController.js:5
+[exit=0]
+
+$ grep -rc 'catch (err)' server/src | awk -F: '{s += $2} END {print s}'
+11
+[exit=0]
+### C-09
+
+$ find client/src -name '*.jsx' ! -name '*.test.jsx' -exec wc -l {} + | sort -n | tail -6
+   10 client/src/main.jsx
+  351 client/src/App.jsx
+  361 total
+[exit=0]
+
+$ find client/src -name '*.jsx' -exec wc -l {} + | sort -n | tail -4
+   10 client/src/main.jsx
+  351 client/src/App.jsx
+  361 total
+[exit=0]
+
+$ wc -l client/src/App.jsx
+351 client/src/App.jsx
+[exit=0]
+### C-11
+
+$ ls server/migrations/*.js | wc -l
+ls: cannot access 'server/migrations/*.js': No such file or directory
+0
+[exit=0]
+
+$ ls server/migrations/
+ls: cannot access 'server/migrations/': No such file or directory
+[exit=2]
+
+$ ls server/migrations/*.sql | grep -v _rollback | wc -l
+ls: cannot access 'server/migrations/*.sql': No such file or directory
+0
+[exit=0]
+### C-12
+
+$ sed -n '/[Cc]omo [Ee]xecutar/,/^### Opção B/p' README.md | grep -E '^(docker|git|cd) '
+cd server
+cd client
+[exit=0]
+### C-13
+
+$ grep -cE '^\s{4}(get|post|put|patch|delete):' docs/arquitetura/contrato-api.yaml
+grep: docs/arquitetura/contrato-api.yaml: No such file or directory
+[exit=2]
+
+$ grep -rhoE 'router\.(get|post|put|patch|delete)\(' server/src/routes | wc -l
+10
+[exit=0]
+
+$ grep -rhE 'router\.(get|post|put|patch|delete)\(' server/src/routes
+router.post('/', ReservationController.createReservation);
+router.get('/', ReservationController.getAllReservations);
+router.get('/:id', ReservationController.getReservationById);
+router.patch('/:id/status', ReservationController.updateReservationStatus);
+router.delete('/:id', ReservationController.deleteReservation);
+router.post('/', ResourceController.createResource);
+router.get('/', ResourceController.getAllResources);
+router.get('/:id', ResourceController.getResourceById);
+router.put('/:id', ResourceController.updateResource);
+router.delete('/:id', ResourceController.deleteResource);
+[exit=0]
+### C-14
+
+$ grep -cE '^\| D-[0-9]+ ' docs/auditoria/divergencias-doc-codigo.md
+grep: docs/auditoria/divergencias-doc-codigo.md: No such file or directory
+[exit=2]
+### C-15
+
+$ grep -rhoE '<label[^>]*>' client/src --include='*.jsx' | grep -vc 'htmlFor'
+7
+[exit=0]
+
+$ grep -rhoE '<label[^>]*>' client/src --include='*.jsx' | wc -l
+7
+[exit=0]
+### C-16
+
+$ grep -rc 'eslint-disable' client/src server/src | awk -F: '{s += $2} END {print s}'
+2
+[exit=0]
+### C-17
+
+$ find . -path ./node_modules -prune -o -path '*/node_modules' -prune -o -path ./.git -prune -o -type f -size 0 -print
+./client/client.txt
+./server/server.txt
+./shared/shared.txt
+[exit=0]
+### C-18
+
+$ cd client && npm test 2>&1 | tail -6
+npm error Missing script: "test"
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: C:\Users\igors\AppData\Local\npm-cache\_logs\2026-10-23T18_36_53_494Z-debug-0.log
+[exit=0]
+### C-19
+
+$ cd client && npm run build 2>&1 | tail -8
+✓ 1835 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.30 kB
+dist/assets/index-DsjlROJM.css    3.07 kB │ gzip:  1.04 kB
+dist/assets/index-BHxNNd1X.js   201.86 kB │ gzip: 63.26 kB
+
+[32m✓ built in 1.08s[39m
+[exit=0]
+### C-20
+
+$ find server/src client/src -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.css' \) -exec wc -l {} + | tail -1
+ 1280 total
+[exit=0]
+
+$ find server/src client/src -type f \( -name '*.js' -o -name '*.jsx' \) -exec wc -l {} + | tail -1
+  853 total
+[exit=0]
+
+$ find server/src client/src -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.css' \) ! -name '*.test.*' ! -name 'setupTests.js' -exec wc -l {} + | tail -1
+ 1242 total
+[exit=0]
+
+$ find server/src client/src -type f \( -name '*.js' -o -name '*.jsx' \) ! -name '*.test.*' ! -name 'setupTests.js' -exec wc -l {} + | tail -1
+  815 total
+[exit=0]
+
+$ find server/src -type f -name '*.js' ! -name '*.test.js' -exec wc -l {} + | tail -1
+  372 total
+[exit=0]
+
+$ find client/src -name '*.css' -exec wc -l {} +
+ 182 client/src/App.css
+ 245 client/src/index.css
+ 427 total
+[exit=0]
+
+$ find server client/src -path '*/node_modules' -prune -o -type f \( -name '*.test.js' -o -name '*.test.jsx' \) -print | xargs wc -l | tail -1
+38 server/src/models/reservationModel.test.js
+[exit=0]
+### CS greps
+
+$ grep -rn "'scheduled'\|'cancelled'\|'completed'\|'workstation'\|'meeting_room'" server/src client/src | grep -v '\.test\.' 
+server/src/config/initDb.js:8:      type VARCHAR(50) NOT NULL, -- 'workstation' or 'meeting_room'
+server/src/config/initDb.js:20:      status VARCHAR(20) DEFAULT 'scheduled', -- 'scheduled', 'cancelled', 'completed'
+server/src/models/reservationModel.js:53:      AND status != 'cancelled'
+client/src/App.jsx:23:  const [resType, setResType] = useState('workstation');
+client/src/App.jsx:212:                        {res.type === 'meeting_room' ? 'Sala de Reunião' : 'Estação de Trabalho'} |{' '}
+client/src/App.jsx:309:                        {rev.status === 'scheduled' && (
+client/src/App.jsx:317:                              onClick={() => handleStatusChange(rev.id, 'completed')}
+client/src/App.jsx:324:                              onClick={() => handleStatusChange(rev.id, 'cancelled')}
+[exit=0]
+
+$ grep -rln "'scheduled'\|'cancelled'\|'completed'\|'workstation'\|'meeting_room'" server/src client/src | grep -v '\.test\.'
+server/src/config/initDb.js
+server/src/models/reservationModel.js
+client/src/App.jsx
+[exit=0]
+
+$ grep -rn 'http://localhost:5000' client/src
+client/src/services/api.js:1:const API_BASE_URL = 'http://localhost:5000/api';
+[exit=0]
+
+$ grep -rc 'loadData()' client/src | awk -F: '{s += $2} END {print s}'
+6
+[exit=0]
+
+$ grep -rnE 'helmet|rateLimit|CORS_ALLOWED_ORIGINS' server/src | grep -v '\.test\.'
+[exit=1]
+### CI / processo
+
+$ grep -cE '^  [a-z-]+:$' .github/workflows/ci.yml
+3
+[exit=0]
+
+$ grep -c develop .github/workflows/ci.yml
+2
+[exit=0]
+
+$ grep -c 'services:' .github/workflows/ci.yml
+0
+[exit=1]
+
+$ grep -A6 coverageThreshold server/jest.config.js
+grep: server/jest.config.js: No such file or directory
+[exit=2]
+
+$ ls docker-compose.yml server/Dockerfile client/Dockerfile
+ls: cannot access 'docker-compose.yml': No such file or directory
+ls: cannot access 'server/Dockerfile': No such file or directory
+ls: cannot access 'client/Dockerfile': No such file or directory
+[exit=2]
+
+$ ls .github/ISSUE_TEMPLATE/*.yml | wc -l
+ls: cannot access '.github/ISSUE_TEMPLATE/*.yml': No such file or directory
+0
+[exit=0]
+
+$ ls .github/pull_request_template.md
+ls: cannot access '.github/pull_request_template.md': No such file or directory
+[exit=2]
+
+$ test -f .github/CODEOWNERS && grep -c '^[^#]' .github/CODEOWNERS
+[exit=1]
+
+$ ls docs/arquitetura/contrato-api.yaml
+ls: cannot access 'docs/arquitetura/contrato-api.yaml': No such file or directory
+[exit=2]
+
+$ ls docs/handoff/
+ls: cannot access 'docs/handoff/': No such file or directory
+[exit=2]

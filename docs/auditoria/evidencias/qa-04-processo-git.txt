@@ -1,0 +1,57 @@
+QA-04 — C-21 processo e Git, 2026-10-23T15:35:06-03:00, origin/main d5d56ef8b353855799dcbee862f980fd260115ce
+issues total: 30
+issues abertas: 10 -> 49,47,28,24,23,20,19,18,17,16
+PRs total: 31
+PRs merged: 23
+PRs closed sem merge: 5
+PRs abertos: 3
+commits em main: 120
+commits recebidos (upstream/main): 10
+--- reviews por PR mergeado
+#58 autor=adrian-cesar igorSeberino:APPROVED
+#57 autor=adrian-cesar igorSeberino:APPROVED
+#56 autor=gabrielcarvallho igorSeberino:DISMISSED,igorSeberino:APPROVED
+#55 autor=gabrielcarvallho adrian-cesar:APPROVED
+#54 autor=gabrielcarvallho igorSeberino:APPROVED
+#53 autor=gabrielcarvallho igorSeberino:APPROVED
+#52 autor=Diegonessler igorSeberino:APPROVED
+#51 autor=igorSeberino gabrielcarvallho:APPROVED
+#50 autor=igorSeberino adrian-cesar:APPROVED,adrian-cesar:APPROVED,adrian-cesar:APPROVED,adrian-cesar:APPROVED
+#48 autor=igorSeberino adrian-cesar:APPROVED
+#46 autor=igorSeberino gabrielcarvallho:APPROVED
+#45 autor=Diegonessler igorSeberino:APPROVED
+#44 autor=RenatoColin igorSeberino:DISMISSED,igorSeberino:APPROVED
+#43 autor=RenatoColin igorSeberino:DISMISSED,igorSeberino:APPROVED
+#42 autor=RenatoColin igorSeberino:APPROVED
+#41 autor=adrian-cesar igorSeberino:DISMISSED,igorSeberino:APPROVED
+#40 autor=gabrielcarvallho igorSeberino:APPROVED
+#39 autor=Diegonessler igorSeberino:APPROVED
+#38 autor=igorSeberino gabrielcarvallho:APPROVED
+#37 autor=igorSeberino gabrielcarvallho:APPROVED
+#36 autor=RenatoColin igorSeberino:DISMISSED
+#35 autor=RenatoColin igorSeberino:APPROVED
+#29 autor=igorSeberino 
+--- arquivos .github
+.github/workflows/ci.yml
+--- C-04 bugs por label (C-06)
+sev: critico = 0
+sev: alto = 0
+sev: medio = 1
+sev: baixo = 0
+--- code smell (C-07)
+sev: alto = 0
+sev: medio = 2
+sev: baixo = 0
+--- protecao de main
+{"aprovacoes":1,"checks":0,"code_owners":false,"contexts":null,"enforce_admins":false}
+--- jobs CI
+  backend:
+  frontend:
+  quality-report:
+  docker-compose-smoke:
+--- execucoes do roteiro
+completed	success	fix(resources): validar tipo e capacidade do espaco (BE-09)	CI	fix/validate-resource-type-capacity	pull_request	40004223933	41s	2026-10-23T18:33:11Z
+completed	success	fix(resources): validar tipo e capacidade do espaco (BE-09)	CI	fix/validate-resource-type-capacity	pull_request	40004009093	46s	2026-10-23T18:31:36Z
+completed	success	fix(errors): responder 400 e 413 a corpo JSON malformado ou grande demais (BE-10)	CI	fix/malformed-json-error-response	pull_request	40003994650	47s	2026-10-23T18:31:30Z
+completed	success	chore: adicionar CODEOWNERS, templates e validação do título do PR	Padrão de commit	claude/gallant-ptolemy-8yfgnp	pull_request	40003901350	7s	2026-10-23T18:30:51Z
+completed	success	chore: adicionar CODEOWNERS, templates e validação do título do PR	CI	claude/gallant-ptolemy-8yfgnp	pull_request	40003901312	46s	2026-10-23T18:30:51Z

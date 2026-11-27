@@ -1,0 +1,96 @@
+name: Tarefa de refatoração
+description: Resolver um code smell, sem mudar comportamento observável.
+title: 'REFACTOR — '
+labels: ['code smell', 'N2']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Refatoração **não muda comportamento**. Se o comportamento muda, é bug
+        ou feature, e o formulário é outro.
+
+        Esta issue exige métrica antes e métrica alvo. É o que transforma
+        "melhoramos a qualidade" em "o maior `.jsx` saiu de 351 para 58 linhas".
+
+  - type: input
+    id: smell-id
+    attributes:
+      label: ID do catálogo
+      description: CS-01 a CS-14 de `docs/auditoria/code-smells.md`; "novo" se foi encontrado agora.
+      placeholder: CS-01
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severidade
+    attributes:
+      label: Severidade do smell
+      description: O PO aplica a label `sev:` correspondente na triagem.
+      options:
+        - 'ALTO'
+        - 'MÉDIO'
+        - 'BAIXO'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - 'backend'
+        - 'frontend'
+        - 'infra'
+        - 'docs'
+        - 'qa'
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidencia
+    attributes:
+      label: Evidência
+      description: Comando que mede o smell, com a saída. Sem comando, não é evidência — é opinião.
+      render: shell
+      placeholder: |
+        $ grep -c 'catch (err)' server/src/controllers/*.js
+        server/src/controllers/reservationController.js:5
+        server/src/controllers/resourceController.js:5
+    validations:
+      required: true
+
+  - type: input
+    id: metrica-antes
+    attributes:
+      label: Métrica — valor antes (medido)
+      placeholder: '10 blocos try/catch idênticos'
+    validations:
+      required: true
+
+  - type: input
+    id: metrica-alvo
+    attributes:
+      label: Métrica — valor alvo
+      placeholder: '0 blocos duplicados, com um middleware de erro registrado uma vez'
+    validations:
+      required: true
+
+  - type: textarea
+    id: custo
+    attributes:
+      label: Custo de manutenção que o smell impõe hoje
+      description: Por que isto encarece a próxima mudança. É o argumento que justifica gastar tempo em algo que "já funciona".
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: garantias
+    attributes:
+      label: Garantias de que o comportamento não muda
+      options:
+        - label: Existe teste automatizado cobrindo o comportamento atual ANTES da refatoração, ou ele será escrito primeiro.
+          required: true
+        - label: O roteiro de regressão manual (`docs/qa/roteiro-regressao.md`) será executado antes e depois, com os dois registros anexados ao PR.
+          required: true
+        - label: Nenhum endpoint, nome de campo da API ou texto visível ao usuário muda neste PR.
+          required: false

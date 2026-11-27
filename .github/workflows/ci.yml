@@ -1,38 +1,153 @@
-name: CI/CD Pipeline
+name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  backend-lint-test:
+  backend:
+    name: Backend — lint, auditoria e testes
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./server
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: srec
+          POSTGRES_PASSWORD: srec
+          POSTGRES_DB: srec_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U srec -d srec_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgres://srec:srec@localhost:5432/srec_test
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+          cache-dependency-path: server/package-lock.json
       - run: npm ci
-      - run: npm run lint
-      - run: npm test
+      - name: Lint
+        run: npm run lint
+      - name: Auditoria de dependências
+        run: npm audit --audit-level=high
+        continue-on-error: true # fase 1: observar, não bloquear
+      - name: Aplicar migrations no banco de teste
+        run: npm run db:migrate
+      - name: Testes (unitários e de integração) com gate de cobertura
+        run: npm run test:ci
+      - name: Publicar relatório de cobertura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage-${{ github.run_number }}
+          path: server/coverage/
+          retention-days: 14
 
-  frontend-lint-build:
+  frontend:
+    name: Frontend — lint, formato, testes e build
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./client
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+          cache-dependency-path: client/package-lock.json
       - run: npm ci --legacy-peer-deps
-      - run: npm run lint
-      - run: npm run build
+      - name: Formatação (Prettier)
+        run: npm run format:check
+      - name: Lint
+        run: npm run lint
+      - name: Auditoria de dependências
+        run: npm audit --audit-level=high
+        continue-on-error: true # fase 1: observar, não bloquear
+      - name: Testes
+        run: npm test
+      - name: Build de produção
+        run: npm run build
+
+  quality-report:
+    name: Relatório de qualidade (não bloqueante na fase 1)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Instalar dependências do server
+        working-directory: ./server
+        run: npm ci
+      - name: Instalar dependências do client
+        working-directory: ./client
+        run: npm ci --legacy-peer-deps
+      - name: Lint estrito do server (0 avisos tolerados)
+        id: server_lint
+        working-directory: ./server
+        continue-on-error: true
+        run: npm run lint:strict
+      - name: Lint estrito do client (0 avisos tolerados)
+        id: client_lint
+        working-directory: ./client
+        continue-on-error: true
+        run: npm run lint:strict
+      - name: Resumo
+        run: |
+          {
+            echo '### Portões de qualidade — fase 1 (observando)'
+            echo ''
+            echo '| Pacote | lint estrito (--max-warnings=0) |'
+            echo '|---|---|'
+            echo "| server | ${{ steps.server_lint.outcome }} |"
+            echo "| client | ${{ steps.client_lint.outcome }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  docker-compose-smoke:
+    name: Docker — build e smoke test do compose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build das imagens
+        run: docker compose -f docker-compose.yml build
+
+      - name: Subir a stack de produção
+        run: docker compose -f docker-compose.yml up -d --wait --wait-timeout 180
+
+      - name: Smoke test da API
+        run: |
+          curl --fail --silent --show-error http://localhost:5000/
+          test "$(curl --fail --silent http://localhost:5000/api/resources)" = "[]"
+
+      - name: Smoke test do frontend
+        run: curl --fail --silent --show-error http://localhost:5173 | grep -q 'id="root"'
+
+      - name: Logs em caso de falha
+        if: failure()
+        run: docker compose -f docker-compose.yml logs --no-color
+
+      - name: Derrubar a stack
+        if: always()
+        run: docker compose -f docker-compose.yml down -v

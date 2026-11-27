@@ -1,0 +1,82 @@
+name: Débito técnico
+description: Atalho, pendência ou workaround assumido deliberadamente.
+title: 'DÉBITO — '
+labels: ['debito tecnico', 'N2']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Política do time: o débito é registrado **no momento em que é criado**,
+        não no fim da entrega. Entregar débito conhecido e documentado é honesto;
+        entregar débito escondido é o que gerou os 6,14 % de cobertura que
+        recebemos.
+
+  - type: textarea
+    id: descricao
+    attributes:
+      label: Qual é o atalho
+      description: O que foi feito, e o que deveria ter sido feito.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: origem
+    attributes:
+      label: Origem
+      description: |
+        `herdado` = veio do código recebido do grupo MAGUGI.
+        `criado-n2` = nós criamos nesta entrega.
+        O PO aplica a label `herdado` quando for o caso.
+      options:
+        - 'herdado — veio no código recebido'
+        - 'criado-n2 — assumido por nós nesta entrega'
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivo
+    attributes:
+      label: Por que o atalho foi tomado
+      description: Prazo, dependência externa, decisão de escopo. Seja específico; "falta de tempo" não explica nada em dezembro.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: prioridade
+    attributes:
+      label: Afeta alguma das três prioridades máximas?
+      description: 'Critério de `docs/time/overview.md`: regra de negócio central, segurança, ou capacidade do time de trabalhar.'
+      options:
+        - 'Sim — a regra de negócio central (não sobrepor reservas)'
+        - 'Sim — segurança'
+        - 'Sim — a capacidade do time de trabalhar (ambiente, teste, CI)'
+        - 'Não — pode esperar a N3'
+    validations:
+      required: true
+
+  - type: textarea
+    id: impacto
+    attributes:
+      label: Impacto estimado
+      description: Com número quando houver. "Cada mudança de contrato da API exige editar 10 arquivos" vale; "dificulta a manutenção" não.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposta
+    attributes:
+      label: Proposta de solução
+      description: O que precisaria ser feito para liquidar. Não precisa estar pronto para implementar, precisa estar claro.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: quando
+    attributes:
+      label: Quando se pretende liquidar
+      description: 'O PO aplica a label `N2` ou `N3`. A reserva de esforço do ciclo para débito é de ~15 %.'
+      options:
+        - 'Ainda na N2'
+        - 'Fica para a N3 (vai no handoff)'
+    validations:
+      required: true

@@ -1,0 +1,381 @@
+Commit medido: 9662616140cb9efa11169b0d5db5a0decb7d5b68  (Merge pull request #59 from igorSeberino/claude/gallant-ptolemy-8yfgnp)
+Ambiente: node v24.22.0, npm 11.19.1, Windows 11
+### C-02
+
+$ cd server && npx jest --listTests | wc -l
+21
+[exit=0]
+
+$ cd server && npx jest 2>&1 | grep -E '^(Test Suites|Tests):'
+Test Suites: 4 failed, 17 passed, 21 total
+Tests:       17 failed, 1 todo, 220 passed, 238 total
+[exit=0]
+
+$ cd server && npx jest --selectProjects unit 2>&1 | grep -E '^(Test Suites|Tests):'
+Test Suites: 14 passed, 14 total
+Tests:       153 passed, 153 total
+[exit=0]
+### C-03
+
+$ grep -rhoE "\.(get|post|put|patch|delete)\('/api/[^']*'" server/test/integration server/tests/integration | sed -E "s/\('/ /; s/'$//" | sort -u
+grep: server/test/integration: No such file or directory
+.delete /api/reservations/999999
+.delete /api/reservations/abc
+.delete /api/resources/999999
+.delete /api/resources/abc
+.get /api/nope
+.get /api/reservations
+.get /api/reservations/999999
+.get /api/reservations/abc
+.get /api/resources
+.get /api/resources/999999
+.get /api/resources/abc
+.post /api/reservations
+.post /api/resources
+.put /api/resources/999999
+.put /api/resources/abc
+[exit=0]
+### C-04
+
+$ cd server && npm run lint
+
+> server@1.0.0 lint
+> eslint src/ tests/ scripts/
+
+
+C:\Users\igors\srec-qa04\server\scripts\migrate.js
+  20:28  warning  Found readFileSync from package "fs" with non literal argument at index 0  security/detect-non-literal-fs-filename
+
+C:\Users\igors\srec-qa04\server\src\config\env.js
+  22:1   warning  Function 'lerInteiro' has too many parameters (5). Maximum allowed is 4  max-params
+  23:13  warning  Function Call Object Injection Sink                                      security/detect-object-injection
+  24:24  warning  Function Call Object Injection Sink                                      security/detect-object-injection
+
+C:\Users\igors\srec-qa04\server\src\domain\reservationStatus.js
+  13:58  warning  Generic Object Injection Sink  security/detect-object-injection
+  14:81  warning  Generic Object Injection Sink  security/detect-object-injection
+  15:70  warning  Generic Object Injection Sink  security/detect-object-injection
+
+C:\Users\igors\srec-qa04\server\src\middlewares\errorHandler.js
+  6:25  warning  Arrow function has a complexity of 11. Maximum allowed is 10  complexity
+
+C:\Users\igors\srec-qa04\server\src\middlewares\validateIdParam.js
+  3:17  warning  Variable Assigned to Object Injection Sink  security/detect-object-injection
+
+C:\Users\igors\srec-qa04\server\src\services\reservationService.js
+  10:89   warning  Generic Object Injection Sink  security/detect-object-injection
+  10:119  warning  Generic Object Injection Sink  security/detect-object-injection
+  10:144  warning  Generic Object Injection Sink  security/detect-object-injection
+
+C:\Users\igors\srec-qa04\server\src\utils\datetime.js
+  2:30  warning  Unsafe Regular Expression  security/detect-unsafe-regex
+
+✖ 13 problems (0 errors, 13 warnings)
+
+[exit=0]
+
+$ cd client && npm run lint
+
+> client@0.0.0 lint
+> eslint .
+
+
+C:\Users\igors\srec-qa04\client\src\features\reservations\ReservationForm.jsx
+  18:8  warning  Function 'ReservationForm' has too many lines (87). Maximum allowed is 80  max-lines-per-function
+
+C:\Users\igors\srec-qa04\client\src\features\reservations\validation.js
+  29:8  warning  Function 'validateReservation' has a complexity of 11. Maximum allowed is 10  complexity
+
+C:\Users\igors\srec-qa04\client\src\features\resources\CascadeDeleteDialog.jsx
+  7:8  warning  Function 'CascadeDeleteDialog' has a complexity of 14. Maximum allowed is 10  complexity
+
+C:\Users\igors\srec-qa04\client\src\features\resources\ResourceForm.jsx
+  15:8  warning  Function 'ResourceForm' has too many lines (87). Maximum allowed is 80  max-lines-per-function
+  15:8  warning  Function 'ResourceForm' has a complexity of 15. Maximum allowed is 10   complexity
+
+C:\Users\igors\srec-qa04\client\src\lib\validation.js
+  24:8  warning  Function 'serverFieldErrors' has a complexity of 12. Maximum allowed is 10  complexity
+
+✖ 6 problems (0 errors, 6 warnings)
+
+[exit=0]
+
+$ cd server && npm run lint:strict 2>&1 | tail -3
+✖ 13 problems (0 errors, 13 warnings)
+
+ESLint found too many warnings (maximum: 0).
+[exit=0]
+
+$ cd client && npm run lint:strict 2>&1 | tail -3
+✖ 6 problems (0 errors, 6 warnings)
+
+ESLint found too many warnings (maximum: 0).
+[exit=0]
+### C-05
+
+$ grep -cE 'complexity|max-lines|max-depth|max-params|security|jsx-a11y|eqeqeq' server/eslint.config.js client/eslint.config.js
+server/eslint.config.js:10
+client/eslint.config.js:9
+[exit=0]
+### C-08
+
+$ grep -c 'catch (err)' server/src/controllers/*.js
+server/src/controllers/reservationController.js:0
+server/src/controllers/resourceController.js:0
+server/src/controllers/resourceController.test.js:0
+[exit=1]
+
+$ grep -rc 'catch (err)' server/src | awk -F: '{s += $2} END {print s}'
+3
+[exit=0]
+### C-09
+
+$ find client/src -name '*.jsx' ! -name '*.test.jsx' -exec wc -l {} + | sort -n | tail -6
+   74 client/src/components/ConfirmDialog.jsx
+   78 client/src/features/resources/CascadeDeleteDialog.jsx
+   80 client/src/features/resources/ResourcesPanel.jsx
+  105 client/src/features/resources/ResourceForm.jsx
+  112 client/src/features/reservations/ReservationForm.jsx
+  852 total
+[exit=0]
+
+$ find client/src -name '*.jsx' -exec wc -l {} + | sort -n | tail -4
+  112 client/src/features/reservations/ReservationForm.jsx
+  124 client/src/features/reservations/ReservationForm.test.jsx
+  158 client/src/features/resources/ResourcesPanel.test.jsx
+ 1465 total
+[exit=0]
+
+$ wc -l client/src/App.jsx
+56 client/src/App.jsx
+[exit=0]
+### C-11
+
+$ ls server/migrations/*.js | wc -l
+ls: cannot access 'server/migrations/*.js': No such file or directory
+0
+[exit=0]
+
+$ ls server/migrations/
+0000_initial_schema.sql
+0001_timestamptz.sql
+0001_timestamptz_rollback.sql
+001_reservation_no_overlap.sql
+002_reservation_time_window_check.sql
+003_reservation_status_check.sql
+[exit=0]
+
+$ ls server/migrations/*.sql | grep -v _rollback | wc -l
+5
+[exit=0]
+### C-12
+
+$ sed -n '/[Cc]omo [Ee]xecutar/,/^### Opção B/p' README.md | grep -E '^(docker|git|cd) '
+git clone https://github.com/igorSeberino/srec.git
+cd srec
+docker compose up
+docker compose up -d                 # sobe em background
+docker compose logs -f server        # acompanha o log do backend
+docker compose exec server npm test  # roda os testes dentro do container
+docker compose exec postgres psql -U srec -d srec   # abre um psql no banco
+docker compose down                  # para tudo, preservando os dados
+docker compose down -v               # para tudo e APAGA o volume do banco
+docker compose up --build            # reconstrói as imagens após mudar dependências
+docker compose -f docker-compose.yml up --build
+[exit=0]
+### C-13
+
+$ grep -cE '^\s{4}(get|post|put|patch|delete):' docs/arquitetura/contrato-api.yaml
+grep: docs/arquitetura/contrato-api.yaml: No such file or directory
+[exit=2]
+
+$ grep -rhoE 'router\.(get|post|put|patch|delete)\(' server/src/routes | wc -l
+11
+[exit=0]
+
+$ grep -rhE 'router\.(get|post|put|patch|delete)\(' server/src/routes
+router.get('/', async (req, res) => {
+router.post('/', ReservationController.createReservation);
+router.get('/', ReservationController.getAllReservations);
+router.get('/:id', validateIdParam(), ReservationController.getReservationById);
+router.patch('/:id/status', validateIdParam(), ReservationController.updateReservationStatus);
+router.delete('/:id', validateIdParam(), ReservationController.deleteReservation);
+router.post('/', ResourceController.createResource);
+router.get('/', ResourceController.getAllResources);
+router.get('/:id', validateIdParam(), ResourceController.getResourceById);
+router.put('/:id', validateIdParam(), ResourceController.updateResource);
+router.delete('/:id', validateIdParam(), ResourceController.deleteResource);
+[exit=0]
+### C-14
+
+$ grep -cE '^\| D-[0-9]+ ' docs/auditoria/divergencias-doc-codigo.md
+12
+[exit=0]
+### C-15
+
+$ grep -rhoE '<label[^>]*>' client/src --include='*.jsx' | grep -vc 'htmlFor'
+0
+[exit=1]
+
+$ grep -rhoE '<label[^>]*>' client/src --include='*.jsx' | wc -l
+2
+[exit=0]
+### C-16
+
+$ grep -rc 'eslint-disable' client/src server/src | awk -F: '{s += $2} END {print s}'
+0
+[exit=0]
+### C-17
+
+$ find . -path ./node_modules -prune -o -path '*/node_modules' -prune -o -path ./.git -prune -o -type f -size 0 -print
+./client/client.txt
+./docs/qa/execucoes/.gitkeep
+./server/migrations/.gitkeep
+./server/server.txt
+./shared/shared.txt
+[exit=0]
+### C-18
+
+$ cd client && npm test 2>&1 | tail -6
+
+ Test Files  14 passed (14)
+      Tests  79 passed (79)
+   Start at  15:38:11
+   Duration  10.11s (transform 1.46s, setup 2.92s, import 6.82s, tests 10.98s, environment 38.98s)
+
+[exit=0]
+### C-19
+
+$ cd client && npm run build 2>&1 | tail -8
+✓ 1868 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.45 kB │ gzip:  0.29 kB
+dist/assets/index-0gM5EBxT.css    4.11 kB │ gzip:  1.31 kB
+dist/assets/index-CHFqFhzg.js   214.45 kB │ gzip: 67.80 kB
+
+[32m✓ built in 709ms[39m
+[exit=0]
+### C-20
+
+$ find server/src client/src -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.css' \) -exec wc -l {} + | tail -1
+  4042 total
+[exit=0]
+
+$ find server/src client/src -type f \( -name '*.js' -o -name '*.jsx' \) -exec wc -l {} + | tail -1
+  3701 total
+[exit=0]
+
+$ find server/src client/src -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.css' \) ! -name '*.test.*' ! -name 'setupTests.js' -exec wc -l {} + | tail -1
+ 2414 total
+[exit=0]
+
+$ find server/src client/src -type f \( -name '*.js' -o -name '*.jsx' \) ! -name '*.test.*' ! -name 'setupTests.js' -exec wc -l {} + | tail -1
+ 2073 total
+[exit=0]
+
+$ find server/src -type f -name '*.js' ! -name '*.test.js' -exec wc -l {} + | tail -1
+  666 total
+[exit=0]
+
+$ find client/src -name '*.css' -exec wc -l {} +
+341 client/src/index.css
+[exit=0]
+
+$ find server client/src -path '*/node_modules' -prune -o -type f \( -name '*.test.js' -o -name '*.test.jsx' \) -print | xargs wc -l | tail -1
+ 2276 total
+[exit=0]
+### CS greps
+
+$ grep -rn "'scheduled'\|'cancelled'\|'completed'\|'workstation'\|'meeting_room'" server/src client/src | grep -v '\.test\.' 
+server/src/domain/reservationStatus.js:2:  SCHEDULED: 'scheduled',
+server/src/domain/reservationStatus.js:3:  CANCELLED: 'cancelled',
+server/src/domain/reservationStatus.js:4:  COMPLETED: 'completed',
+server/src/domain/reservationStatus.js:8:  scheduled: Object.freeze(['completed', 'cancelled']),
+client/src/constants/domain.js:2:  WORKSTATION: 'workstation',
+client/src/constants/domain.js:3:  MEETING_ROOM: 'meeting_room',
+client/src/constants/domain.js:12:  SCHEDULED: 'scheduled',
+client/src/constants/domain.js:13:  CANCELLED: 'cancelled',
+client/src/constants/domain.js:14:  COMPLETED: 'completed',
+[exit=0]
+
+$ grep -rln "'scheduled'\|'cancelled'\|'completed'\|'workstation'\|'meeting_room'" server/src client/src | grep -v '\.test\.'
+server/src/domain/reservationStatus.js
+client/src/constants/domain.js
+[exit=0]
+
+$ grep -rn 'http://localhost:5000' client/src
+client/src/config/env.js:2:const DEFAULT_API_BASE_URL = 'http://localhost:5000/api';
+client/src/services/http.test.js:66:      `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5000/api'}/resources`
+[exit=0]
+
+$ grep -rc 'loadData()' client/src | awk -F: '{s += $2} END {print s}'
+0
+[exit=0]
+
+$ grep -rnE 'helmet|rateLimit|CORS_ALLOWED_ORIGINS' server/src | grep -v '\.test\.'
+server/src/app.js:3:const helmet = require('helmet');
+server/src/app.js:5:const { writeLimiter } = require('./middlewares/rateLimit');
+server/src/app.js:15:  app.use(helmet());
+server/src/config/cors.js:1:const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || 'http://localhost:5173').split(',').map((origin) => origin.trim()).filter(Boolean);
+server/src/config/env.js:65:  if (vazio(source.CORS_ALLOWED_ORIGINS)) return [];
+server/src/config/env.js:66:  const origens = String(source.CORS_ALLOWED_ORIGINS).split(',').map((o) => o.trim()).filter(Boolean);
+server/src/config/env.js:72:        problemas.push(`CORS_ALLOWED_ORIGINS: "${origem}" deve ser apenas a origem (protocolo + host + porta), sem caminho`);
+server/src/config/env.js:75:      problemas.push(`CORS_ALLOWED_ORIGINS: "${origem}" não é uma origem válida. Formato esperado: http://localhost:5173`);
+server/src/config/env.js:94:    problemas.push('CORS_ALLOWED_ORIGINS é obrigatória quando NODE_ENV=production');
+server/src/config/env.js:96:  const rateLimitWindowMs = lerInteiro(source, 'RATE_LIMIT_WINDOW_MS', 60000, { min: 1000, max: 3600000 }, problemas);
+server/src/config/env.js:97:  const rateLimitWriteMax = lerInteiro(source, 'RATE_LIMIT_WRITE_MAX', 20, { min: 1, max: 100000 }, problemas);
+server/src/config/env.js:108:    rateLimitWindowMs,
+server/src/config/env.js:109:    rateLimitWriteMax,
+server/src/middlewares/rateLimit.js:1:const rateLimit = require('express-rate-limit');
+server/src/middlewares/rateLimit.js:4:const writeLimiter = rateLimit({
+[exit=0]
+### CI / processo
+
+$ grep -cE '^  [a-z-]+:$' .github/workflows/ci.yml
+5
+[exit=0]
+
+$ grep -c develop .github/workflows/ci.yml
+0
+[exit=1]
+
+$ grep -c 'services:' .github/workflows/ci.yml
+1
+[exit=0]
+
+$ grep -A6 coverageThreshold server/jest.config.js
+  coverageThreshold: {
+    global: { statements: 80, branches: 70, functions: 85, lines: 80 },
+    './src/controllers/': { statements: 90 },
+    './src/routes/': { statements: 100 },
+  },
+  projects: [
+    { displayName: 'unit', testEnvironment: 'node', testMatch: ['<rootDir>/src/**/*.test.js'] },
+[exit=0]
+
+$ ls docker-compose.yml server/Dockerfile client/Dockerfile
+client/Dockerfile
+docker-compose.yml
+server/Dockerfile
+[exit=0]
+
+$ ls .github/ISSUE_TEMPLATE/*.yml | wc -l
+4
+[exit=0]
+
+$ ls .github/pull_request_template.md
+.github/pull_request_template.md
+[exit=0]
+
+$ test -f .github/CODEOWNERS && grep -c '^[^#]' .github/CODEOWNERS
+11
+[exit=0]
+
+$ ls docs/arquitetura/contrato-api.yaml
+ls: cannot access 'docs/arquitetura/contrato-api.yaml': No such file or directory
+[exit=2]
+
+$ ls docs/handoff/
+ls: cannot access 'docs/handoff/': No such file or directory
+[exit=2]

@@ -1,0 +1,30 @@
+services:
+  server:
+    build:
+      target: development
+    environment:
+      NODE_ENV: development
+    command: ['sh', '-c', 'npm run db:migrate && npm run dev']
+    volumes:
+      - ./server/src:/app/src:ro
+      - ./server/migrations:/app/migrations:ro
+      - ./server/scripts:/app/scripts:ro
+    # node_modules fica na imagem; o anonymous volume abaixo impede que
+    # o bind mount do host (que pode nem existir) mascare a pasta instalada.
+
+  client:
+    build:
+      target: development
+    command: ['npm', 'run', 'dev', '--', '--host', '0.0.0.0']
+    environment:
+      VITE_API_BASE_URL: http://localhost:5000/api
+    # ports é lista: o merge padrão do Compose concatena em vez de substituir,
+    # o que publicaria 5173:80 (base) e 5173:5173 (aqui) ao mesmo tempo e
+    # colidiria na porta do host. !override forca a substituicao.
+    ports: !override
+      - '5173:5173'
+    volumes:
+      - ./client/src:/app/src
+      - ./client/index.html:/app/index.html
+      - ./client/vite.config.js:/app/vite.config.js
+      - /app/node_modules

@@ -23,14 +23,15 @@ const ResourceModel = {
     return result.rows[0];
   },
 
-  async update(id, name, type, capacity) {
+  async update(id, fields) {
     const query = `
       UPDATE resources
-      SET name = $1, type = $2, capacity = $3, updated_at = CURRENT_TIMESTAMP
+      SET name = COALESCE($1, name), type = COALESCE($2, type),
+          capacity = COALESCE($3, capacity), updated_at = CURRENT_TIMESTAMP
       WHERE id = $4
       RETURNING *;
     `;
-    const result = await db.query(query, [name, type, capacity, id]);
+    const result = await db.query(query, [fields.name || null, fields.type || null, fields.capacity ?? null, id]);
     return result.rows[0];
   },
 
