@@ -39,4 +39,30 @@ describe('ResourceService', () => {
     ResourceModel.findById.mockResolvedValue(undefined);
     await expect(ResourceService.getById(1)).rejects.toMatchObject({ code: 'RESOURCE_NOT_FOUND', statusCode: 404 });
   });
+  it('rejects create when name or type is missing', async () => {
+    await expect(ResourceService.create({ name: '', type: 'workstation' })).rejects.toMatchObject({
+      code: 'RESOURCE_FIELDS_REQUIRED',
+      statusCode: 400,
+    });
+    await expect(ResourceService.create({ name: 'Mesa', type: '' })).rejects.toMatchObject({
+      code: 'RESOURCE_FIELDS_REQUIRED',
+      statusCode: 400,
+    });
+  });
+  it('rejects update with blank name, capacity > 100, or nonexistent resource', async () => {
+    await expect(ResourceService.update(1, { name: '   ' })).rejects.toMatchObject({ code: 'INVALID_NAME', statusCode: 400 });
+    await expect(ResourceService.update(1, { capacity: 101 })).rejects.toMatchObject({ code: 'INVALID_CAPACITY', statusCode: 400 });
+    ResourceModel.update.mockResolvedValue(undefined);
+    await expect(ResourceService.update(99, { name: 'Nova Sala' })).rejects.toMatchObject({
+      code: 'RESOURCE_NOT_FOUND',
+      statusCode: 404,
+    });
+  });
+  it('lists and removes resources', async () => {
+    ResourceModel.findAll.mockResolvedValue([{ id: 1 }]);
+    await expect(ResourceService.list()).resolves.toEqual([{ id: 1 }]);
+    ResourceModel.delete.mockResolvedValueOnce({ id: 1 }).mockResolvedValueOnce(undefined);
+    await expect(ResourceService.remove(1)).resolves.toEqual({ id: 1 });
+    await expect(ResourceService.remove(99)).rejects.toMatchObject({ code: 'RESOURCE_NOT_FOUND', statusCode: 404 });
+  });
 });
