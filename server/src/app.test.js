@@ -14,4 +14,17 @@ describe('HTTP surface', () => {
     expect(response.status).toBe(404);
     expect(response.body).toHaveProperty('code');
   });
+  it('returns JSON status on GET /', async () => {
+    const response = await request(createApp()).get('/');
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ name: 'SREC Coworking API', status: 'running', health: '/health' });
+  });
+  it('returns 400 INVALID_JSON on malformed JSON payload (PR #60)', async () => {
+    const response = await request(createApp())
+      .post('/api/resources')
+      .set('Content-Type', 'application/json')
+      .send('{"name":');
+    expect(response.status).toBe(400);
+    expect(response.body).toMatchObject({ code: 'INVALID_JSON' });
+  });
 });
